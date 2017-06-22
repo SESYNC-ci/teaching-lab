@@ -7,7 +7,7 @@ server {
 	listen 80;
 
 	location / {
-    root /www/html;
+    root /usr/share/www;
 	}
   
   location /rstudio/ {

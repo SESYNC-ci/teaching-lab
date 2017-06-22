@@ -1,0 +1,14 @@
+.disable-links a {
+    color: #333;
+    pointer-events: none;
+    cursor: default;
+}
+.hide-instructor td:nth-child(4) {
+    display: none;
+}
+#agenda td:nth-child(1) {
+    width: 25%;
+}
+.logo-row a:hover {
+    text-decoration: none;
+}
