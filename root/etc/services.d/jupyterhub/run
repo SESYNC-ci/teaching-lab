@@ -1,0 +1,2 @@
+#!/usr/bin/with-contenv sh
+exec /usr/local/bin/jupyterhub --no-ssl -f /etc/jupyterhub/jupyterhub_config.py
