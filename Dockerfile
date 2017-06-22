@@ -9,6 +9,7 @@ RUN apt-get install -yq --no-install-recommends \
     build-essential \
     apt-utils \
     curl \
+    gnupg2 \
     nginx
 
 ## add NodeSource repository and nodejs
