@@ -34,6 +34,9 @@ RUN apt-get install -yq --no-install-recommends \
     python3-pip
 RUN pip3 install --upgrade pip
 RUN pip3 install \
+    setuptools \
+    wheel
+RUN pip3 install \
     pandas \
     sqlalchemy \
     tornado \
