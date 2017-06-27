@@ -1,0 +1,9 @@
+#!/usr/bin/with-contenv /bin/bash
+
+if [ -z "$USER" ]; then
+    echo -e "\e[93mUSER is not defined. Shutting down."
+    echo -e "\e[93mAdd a USER environment variable under the \"settings\" tab."
+    s6-svscanctl -t /var/run/s6/services
+else
+    useradd -m $USER -p $(openssl passwd -1 $USER)
+fi

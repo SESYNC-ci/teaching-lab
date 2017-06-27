@@ -49,9 +49,11 @@ RUN pip3 install \
 RUN npm install -g \
     configurable-http-proxy
 
+## include configuration for s6-overlay services, including nginx
 ADD root /
 
-VOLUME /handouts
+## add an empty "network file storage" for user data
+VOLUME /data
 
 EXPOSE 80
 
@@ -62,7 +64,10 @@ ENTRYPOINT ["/init"]
 # use gitlab pages as web server and git 'origin'
 # ssh-keygen: could put a private ssh key in the docker file, for GitHub ... but maybe not needed without the handouts repo.
 # what does user namespaces on docker allow?
-# curl the handouts repo
+# curl/clone the handouts repo
+# use ADD instead of curl for s6-overlay when replacing rstudio image?
+# if everyone "imports" the handouts on GitHub, then clones locally with data - they can all push to share solutions, and handouts are within /home/username/reponame
+# would be tidy to remove the /home/rstudio/kitematic
 
 ## fixmes
 # R packages cairo and rgdal not installing?, missing cairo.h and proj_api.h
