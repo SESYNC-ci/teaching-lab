@@ -57,11 +57,16 @@
         <div class="col-md-9">
           <div class="main-content"><ul>
             <h1>Teaching Lab</h1>
-            <p>The following software are hosted in the Docker container. Click the icon to launch and login with username "rstudio" and password "rstudio".</p>
+            <p>Welcome to your data science sandbox.</p>
+            <h3>Access</h3>
+            <p>Services hosted in this Docker container are available under the user name stored in the USER environment variable in Kitematic "Settings". The password is the same as the user name.</p>
+            <h3>Software</h3>             
             <p>
               <a href="/rstudio/" target="_blank"><img src="images/RStudio-Logo-Blue-Gradient.png" alt="RStudio" style="width:30%; padding:10px;"></a>
               <a href="/jupyterhub/" target="_blank"><img src="images/hublogo.svg" alt="JupyterHub" style="width:30%; padding:10px;"></a>
             </p>
+            <h3>Resources</h3>
+            <p>Share files with the Docker container by mounting the "/data" volume. From the Kitematic "Settings" tab for the container, select "Volumes" and click "CHANGE" on the "/data" volume. Create a new folder or choose an existing folder in your filesystem. The contents of this folder will be shared between your system (at its location in your filesystem) and the container (at "/data").</p>
           </div>
         </div>
       </div>
