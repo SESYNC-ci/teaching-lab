@@ -1,0 +1,7 @@
+#!/usr/bin/with-contenv /bin/bash
+
+ID=$(id "$USER")
+if [ -z "$ID" ]; then
+    useradd -m $USER -p $(openssl passwd -1 $USER)
+    su - postgres -c "createuser --role=student $USER"
+fi
