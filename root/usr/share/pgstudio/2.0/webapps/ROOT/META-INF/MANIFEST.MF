@@ -1,0 +1,6 @@
+Manifest-Version: 1.0
+Ant-Version: Apache Ant 1.9.3
+Created-By: 1.8.0_66-b17 (Oracle Corporation)
+Built-On: 2015-11-23 17:30:19
+Implementation-Version: 2.0
+

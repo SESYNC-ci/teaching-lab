@@ -1,0 +1,35 @@
+PostgreSQL Studio README
+========================
+ 
+Introduction
+------------
+PostgreSQL Studio gives you the power to perform essential PostgreSQL 
+database development tasks from a web-based console. With more and more 
+PostgreSQL databases running in a Cloud environment, PostgreSQL Studio 
+lets you work with your databases without the need to open firewalls.
+
+Running
+-------
+This distribution bundles PostgreSQL Studio with Apache Tomcat 8.0.28. To
+run PostgreSQL Studio, follow the directions to start Tomcat described in
+the file, RUNNING.txt, found in this directory. If your environment is
+already configured, you may be able to just run the following relative from
+this directory:
+
+  On Windows:
+
+      THIS_DIRECTORY\bin\startup.bat
+
+  On *nix:
+
+      THIS_DIRECTORY/bin/startup.sh
+
+Once Tomcat has started, you can access PostgreSQL Studio from your browser
+by opening the following URL:
+
+      http://localhost:8080 
+
+Requirements
+------------
+Java 1.8 or greater
+

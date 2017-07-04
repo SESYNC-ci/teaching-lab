@@ -6,4 +6,5 @@ if [ -z "$USER" ]; then
     s6-svscanctl -t /var/run/s6/services
 else
     useradd -m $USER -p $(openssl passwd -1 $USER)
+    su - postgres -c "createuser --role=student $USER" ## FIXME password
 fi

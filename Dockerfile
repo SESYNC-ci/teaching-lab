@@ -4,31 +4,31 @@ MAINTAINER "Ian Carroll" icarroll@sesync.org
 ## base packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
-RUN apt-get update
-RUN apt-get install -yq --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -yq --no-install-recommends \
     build-essential \
     apt-utils \
     curl \
     gnupg2 \
     nginx
 
-## add NodeSource repository and nodejs
+## add NodeSource repository and nodejs (JupyterHub requirement)
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get update
-RUN apt-get install -yq --no-install-recommends \
+RUN apt-get update && \
+    apt-get install -yq --no-install-recommends \
     nodejs
 
 ## OSGeo
 RUN apt-get install -yq --no-install-recommends \
     libgdal-dev
 
-## RStudio
+## R packages
 RUN Rscript -e 'install.packages(c( \
     "rgdal", \
     "shiny"  \
     ), dependencies = TRUE)'
 
-## JupyterHub
+## JupyterHub and Python packages
 RUN apt-get install -yq --no-install-recommends \
     python3-all \
     python3-pip
@@ -45,15 +45,29 @@ RUN pip3 install \
     requests \
     notebook \
     jupyterhub
-
 RUN npm install -g \
     configurable-http-proxy
 
-## include configuration for s6-overlay services, including nginx
+## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
+RUN apt-get install -yq --no-install-recommends \
+    default-jdk
+        
+## PostgreSQL
+RUN apt-get install -yq --no-install-recommends \
+    postgresql \
+    postgresql-contrib
+RUN service postgresql start && \
+    su - postgres -c "createuser --no-login student" && \
+    su - postgres -c "createdb portal -O student" && \
+    service postgresql stop
+RUN usermod -a -G shadow postgres && \
+    sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
+
+## include configuration for s6-overlay services (see root/etc/services.d)
 ADD root /
 
 ## add an empty "network file storage" for user data
-VOLUME /data
+VOLUME /share
 
 EXPOSE 80
 
