@@ -6,7 +6,7 @@ The National Socio-Environmental Synthesis Center ([www.sesync.org](https://www.
 
 - The [image repository] on Docker Hub contains automated builds of the teaching-lab image.
 
-[Releases] of the source on GitHub will be matched with tags on Docker Hub images, reflecting the date and name of a past training event. Trainees at a current or upcoming event should use the defaul (i.e. "latest") tag, unless otherwise instructed.
+[Releases] of the source on GitHub will be matched with [tags] on Docker Hub images, reflecting the date and name of a past training event. Trainees at a current or upcoming event should use the defaul (i.e. "latest") tag, unless otherwise instructed.
 
 [source repository]: https://github.com/SESYNC-ci/teaching-lab/
 [image repository]: https://hub.docker.com/r/sesync/teaching-lab/
