@@ -38,8 +38,8 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE plots (
-    plot_id integer NOT NULL,
-    plot_type text
+    id integer NOT NULL,
+    treatment text
 );
 
 
@@ -50,7 +50,7 @@ ALTER TABLE plots OWNER TO student;
 --
 
 CREATE TABLE species (
-    species_id text NOT NULL,
+    id text NOT NULL,
     genus text,
     species text,
     taxa text
@@ -60,11 +60,11 @@ CREATE TABLE species (
 ALTER TABLE species OWNER TO student;
 
 --
--- Name: surveys; Type: TABLE; Schema: public; Owner: student
+-- Name: animals; Type: TABLE; Schema: public; Owner: student
 --
 
-CREATE TABLE surveys (
-    record_id integer NOT NULL,
+CREATE TABLE animals (
+    id integer NOT NULL,
     month integer,
     day integer,
     year integer,
@@ -76,13 +76,13 @@ CREATE TABLE surveys (
 );
 
 
-ALTER TABLE surveys OWNER TO student;
+ALTER TABLE animals OWNER TO student;
 
 --
 -- Data for Name: plots; Type: TABLE DATA; Schema: public; Owner: student
 --
 
-COPY plots (plot_id, plot_type) FROM stdin;
+COPY plots (id, treatment) FROM stdin;
 1	Spectab exclosure
 2	Control
 3	Long-term Krat Exclosure
@@ -114,7 +114,7 @@ COPY plots (plot_id, plot_type) FROM stdin;
 -- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: student
 --
 
-COPY species (species_id, genus, species, taxa) FROM stdin;
+COPY species (id, genus, species, taxa) FROM stdin;
 AB	Amphispiza	bilineata	Bird
 AH	Ammospermophilus	harrisi	Rodent
 AS	Ammodramus	savannarum	Bird
@@ -173,10 +173,10 @@ ZM	Zenaida	macroura	Bird
 
 
 --
--- Data for Name: surveys; Type: TABLE DATA; Schema: public; Owner: student
+-- Data for Name: animals; Type: TABLE DATA; Schema: public; Owner: student
 --
 
-COPY surveys (record_id, month, day, year, plot_id, species_id, sex, hindfoot_length, weight) FROM stdin;
+COPY animals (id, month, day, year, plot_id, species_id, sex, hindfoot_length, weight) FROM stdin;
 2	7	16	1977	3	NL	M	33	\N
 3	7	16	1977	2	DM	F	37	\N
 4	7	16	1977	7	DM	M	36	\N
@@ -35734,7 +35734,7 @@ COPY surveys (record_id, month, day, year, plot_id, species_id, sex, hindfoot_le
 --
 
 ALTER TABLE ONLY plots
-    ADD CONSTRAINT plots_pkey PRIMARY KEY (plot_id);
+    ADD CONSTRAINT plots_pkey PRIMARY KEY (id);
 
 
 --
@@ -35742,31 +35742,31 @@ ALTER TABLE ONLY plots
 --
 
 ALTER TABLE ONLY species
-    ADD CONSTRAINT species_pkey PRIMARY KEY (species_id);
+    ADD CONSTRAINT species_pkey PRIMARY KEY (id);
 
 
 --
--- Name: surveys_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Name: animals_pkey; Type: CONSTRAINT; Schema: public; Owner: student
 --
 
-ALTER TABLE ONLY surveys
-    ADD CONSTRAINT surveys_pkey PRIMARY KEY (record_id);
-
-
---
--- Name: surveys_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
---
-
-ALTER TABLE ONLY surveys
-    ADD CONSTRAINT surveys_plot_id_fkey FOREIGN KEY (plot_id) REFERENCES plots(plot_id);
+ALTER TABLE ONLY animals
+    ADD CONSTRAINT animals_pkey PRIMARY KEY (id);
 
 
 --
--- Name: surveys_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+-- Name: animals_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
 --
 
-ALTER TABLE ONLY surveys
-    ADD CONSTRAINT surveys_species_id_fkey FOREIGN KEY (species_id) REFERENCES species(species_id);
+ALTER TABLE ONLY animals
+    ADD CONSTRAINT animals_plot_id_fkey FOREIGN KEY (plot_id) REFERENCES plots(id);
+
+
+--
+-- Name: animals_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY animals
+    ADD CONSTRAINT animals_species_id_fkey FOREIGN KEY (species_id) REFERENCES species(id);
 
 
 --
