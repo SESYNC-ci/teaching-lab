@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv /bin/bash
 
 if [ -z "$USER" ]; then
-    echo -e "\e[93mUSER is not defined. Shutting down."
-    echo -e "\e[93mAdd a USER environment variable under the \"settings\" tab."
+    echo -e "\e[93mUSER is null. Shutting down."
+    echo -e "\e[93mAssign a user name to the USER environment variable under Kitematic \"Settings\"."
     s6-svscanctl -t /var/run/s6/services
 fi

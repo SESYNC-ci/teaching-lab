@@ -80,6 +80,8 @@ RUN usermod -a -G shadow postgres && \
 ## add an empty "network file storage" for user data
 VOLUME /share
 
+ENV USER=""
+
 EXPOSE 80
 
 ENTRYPOINT ["/init"]
