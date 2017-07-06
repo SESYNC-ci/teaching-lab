@@ -12,7 +12,8 @@ ENV LANG C.UTF-8
 RUN apt-get update && \
     apt-get install -yq --no-install-recommends \
     build-essential \
-    apt-utils \
+    apt-utils
+RUN apt-get install -yq --no-install-recommends \
     curl \
     gnupg2 \
     nginx
@@ -29,6 +30,8 @@ RUN apt-get install -yq --no-install-recommends \
 
 ## R packages
 RUN Rscript -e 'install.packages(c( \
+    "tidyr", \
+    "ggplot2", \
     "rgdal", \
     "shiny"))'
 
@@ -41,6 +44,7 @@ RUN pip3 install \
     setuptools \
     wheel
 RUN pip3 install \
+    numpy \
     pandas \
     sqlalchemy \
     tornado \
