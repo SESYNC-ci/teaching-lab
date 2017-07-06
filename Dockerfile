@@ -1,84 +1,92 @@
 FROM rocker/rstudio:latest
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
-# Remove rocker/rstudio s6-overlay init scripts
-RUN rm -rf /etc/cont-init.d
+# Mod rocker-org configuration
+RUN rm -rf /etc/cont-init.d \
+ && echo "R_LIBS_USER='~/R/library'" >> /usr/local/lib/R/etc/Renviron
 
 # Installation steps
 
 ## base packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
-RUN apt-get update && \
-    apt-get install -yq --no-install-recommends \
-    build-essential \
-    apt-utils
+RUN apt-get update \
+ && apt-get install -yq --no-install-recommends \
+      build-essential \
+      apt-utils
 RUN apt-get install -yq --no-install-recommends \
-    curl \
-    gnupg2 \
-    nginx
+      curl \
+      gnupg2 \
+      nginx
 
 ## add NodeSource repository and nodejs (JupyterHub requirement)
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get update && \
-    apt-get install -yq --no-install-recommends \
-    nodejs
+RUN apt-get update \
+ && apt-get install -yq --no-install-recommends \
+      nodejs
 
 ## OSGeo
 RUN apt-get install -yq --no-install-recommends \
-    libgdal-dev
-
-## R packages
-RUN Rscript -e 'install.packages(c( \
-    "tidyr", \
-    "ggplot2", \
-    "rgdal", \
-    "shiny"))'
+      libgdal-dev
 
 ## JupyterHub and Python packages
 RUN apt-get install -yq --no-install-recommends \
-    python3-all \
-    python3-pip
+      python3-all \
+      python3-pip
 RUN pip3 install --upgrade pip
 RUN pip3 install \
-    setuptools \
-    wheel
+      setuptools \
+      wheel
 RUN pip3 install \
-    numpy \
-    pandas \
-    sqlalchemy \
-    tornado \
-    jinja2 \
-    traitlets \
-    requests \
-    notebook \
-    jupyterhub
+      tornado \
+      jinja2 \
+      traitlets \
+      requests \
+      notebook \
+      jupyterhub
 RUN npm install -g \
-    configurable-http-proxy
+      configurable-http-proxy
 
 ## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
 RUN apt-get install -yq --no-install-recommends \
-    default-jdk
+      default-jdk
         
 ## PostgreSQL
 RUN apt-get install -yq --no-install-recommends \
-    postgresql \
-    postgresql-contrib && \
-    usermod -a -G shadow postgres
-    
+      postgresql \
+      postgresql-contrib && \
+      usermod -a -G shadow postgres
+
+## Packages and Modules
+
+## R packages
+RUN Rscript -e 'install.packages(c( \
+      "RPostgreSQL", \
+      "dbplyr", \
+      "tidyr", \
+      "ggplot2", \
+      "rgdal", \
+      "shiny"))'
+
+## Python modules
+RUN pip3 install \
+      numpy \
+      pandas \
+      sqlalchemy
+
 # Data & Configuration steps
 
-## includes configuration for s6-overlay services (see root/etc/services.d)
+## include configuration for s6-overlay services (see root/etc/services.d)
 ADD root /
 
 ## Initialize postgresql and "student" role
-RUN service postgresql start && \
-    su - postgres -c "createuser --no-login student" && \
-    su - postgres -c "createdb portal -O student" && \
-    su - postgres -c "psql -q portal < /var/backups/postgresql/portal_dump.sql" && \
-    su - postgres -c "psql -qc 'REVOKE ALL ON schema public FROM public'" && \
-    service postgresql stop && \
-    sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
+RUN service postgresql start \
+ && su - postgres -c "createuser --no-login student" \
+ && su - postgres -c "createdb portal -O student" \
+ && su - postgres -c "psql -q portal < /var/backups/postgresql/portal_dump.sql" \
+ && su - postgres -c "psql -qc 'REVOKE ALL ON schema public FROM public'" \
+ && service postgresql stop \
+ && sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
 
 ## add an empty "network file storage" for user data
 VOLUME /share
@@ -96,14 +104,3 @@ ENTRYPOINT ["/init"]
 # curl/clone the handouts repo?
 # if everyone "imports" the handouts on GitHub, then clones locally with data - they can all push to share solutions, and handouts are within /home/username/reponame
 # would be tidy to remove the /home/rstudio/kitematic ...
-
-## fixmes
-# [ ] ERROR: dependency ‘jsonlite’ is not available for package ‘shiny’
-# [ ] R packages cairo and rgdal not installing?, missing cairo.h and proj_api.h. Maybe taken care of by removing dependencies.
-
-## todo
-# [x] jupyterhub
-# [x] postgresql
-# [x] pgstudio
-# [ ] R packages
-# [ ] Python modules

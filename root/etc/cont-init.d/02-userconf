@@ -3,5 +3,9 @@
 ID=$(id "$USER")
 if [ -z "$ID" ]; then
     useradd -m $USER -p $(openssl passwd -1 $USER)
+    PGPASS="/home/$USER/.pgpass"
+    echo "localhost:*:*:$USER:$USER" > $PGPASS
+    chmod 0600 $PGPASS
+    chown $USER:$USER $PGPASS
     su - postgres -c "createuser --role=student $USER"
 fi
