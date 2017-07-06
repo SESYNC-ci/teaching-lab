@@ -59,22 +59,21 @@ RUN apt-get install -yq --no-install-recommends \
 ## PostgreSQL
 RUN apt-get install -yq --no-install-recommends \
     postgresql \
-    postgresql-contrib
-
+    postgresql-contrib && \
+    usermod -a -G shadow postgres
+    
 # Data & Configuration steps
 
 ## includes configuration for s6-overlay services (see root/etc/services.d)
 ADD root /
 
-## Initialize postgresql and add Portal Mammals database, owned by "student"
+## Initialize postgresql and "student" role
 RUN service postgresql start && \
     su - postgres -c "createuser --no-login student" && \
     su - postgres -c "createdb portal -O student" && \
     su - postgres -c "psql -q portal < /var/backups/postgresql/portal_dump.sql" && \
-    service postgresql stop
-
-## Use PAM authentication based on system users (see also /etc/cont-init.d/userconf)
-RUN usermod -a -G shadow postgres && \
+    su - postgres -c "psql -qc 'REVOKE ALL ON schema public FROM public'" && \
+    service postgresql stop && \
     sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
 
 ## add an empty "network file storage" for user data
