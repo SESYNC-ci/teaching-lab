@@ -80,7 +80,6 @@ RUN Rscript -e 'install.packages(c( \
       "tidyr", \
       "ggplot2", \
       "rgdal", \
-      "swirl", \
       "shiny"))'
 
 ## multipanelfigure
