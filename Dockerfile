@@ -17,7 +17,8 @@ RUN apt-get update \
 RUN apt-get install -yq --no-install-recommends \
       curl \
       gnupg2 \
-      nginx
+      nginx \
+      openssh-client
 
 ## add NodeSource repository and nodejs (JupyterHub requirement)
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
@@ -61,12 +62,29 @@ RUN apt-get install -yq --no-install-recommends \
 
 ## R packages
 RUN Rscript -e 'install.packages(c( \
+      "evaluate", \
+      "formatR", \
+      "highr", \
+      "markdown", \
+      "yaml", \
+      "caTools", \
+      "bitops", \
+      "knitr", \
+      "base64enc", \
+      "rprojroot", \
+      "rmarkdown", \
+      "codetools", \
+      "gridExtra", \
       "RPostgreSQL", \
       "dbplyr", \
       "tidyr", \
       "ggplot2", \
       "rgdal", \
+      "swirl", \
       "shiny"))'
+
+## multipanelfigure
+## librsvg2-dev
 
 ## Python modules
 RUN pip3 install \
