@@ -26,9 +26,10 @@ RUN apt-get update \
  && apt-get install -yq --no-install-recommends \
       nodejs
 
-## OSGeo
+## open science libraries
 RUN apt-get install -yq --no-install-recommends \
-      libgdal-dev
+      libgdal-dev \
+      libudunits2-dev
 
 ## JupyterHub and Python packages
 RUN apt-get install -yq --no-install-recommends \
@@ -85,10 +86,9 @@ RUN Rscript -e 'install.packages(c( \
       "tidyr", \
       "ggplot2", \
       "rgdal", \
+      "sf", \
+      "raster", \
       "shiny"))'
-
-## multipanelfigure
-## librsvg2-dev
 
 ## Python modules
 RUN pip3 install \
