@@ -31,9 +31,10 @@ RUN apt-get install -yq --no-install-recommends \
       libgdal-dev \
       libudunits2-dev
 
-## JupyterHub and Python packages
+## JupyterHub
 RUN apt-get install -yq --no-install-recommends \
       python3-all \
+      python3-dev \
       python3-pip
 RUN pip3 install --upgrade pip
 RUN pip3 install \
@@ -94,6 +95,7 @@ RUN Rscript -e 'install.packages(c( \
 RUN pip3 install \
       numpy \
       pandas \
+      pygresql \
       sqlalchemy
 
 # Data & Configuration steps
