@@ -45,8 +45,11 @@ RUN pip3 install \
       jinja2 \
       traitlets \
       requests \
-      notebook \
-      jupyterhub
+      jupyter \
+      jupyterhub \
+      jupyter-console \
+      ipywidgets
+      
 RUN npm install -g \
       configurable-http-proxy
 

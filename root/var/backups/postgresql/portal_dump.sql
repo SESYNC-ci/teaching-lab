@@ -2,12 +2,13 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.5.3
--- Dumped by pg_dump version 9.5.3
+-- Dumped from database version 9.6.3
+-- Dumped by pg_dump version 9.6.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
-SET client_encoding = 'LATIN1';
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
 SET standard_conforming_strings = on;
 SET check_function_bodies = false;
 SET client_min_messages = warning;
@@ -34,32 +35,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: plots; Type: TABLE; Schema: public; Owner: student
---
-
-CREATE TABLE plots (
-    id integer NOT NULL,
-    treatment text
-);
-
-
-ALTER TABLE plots OWNER TO student;
-
---
--- Name: species; Type: TABLE; Schema: public; Owner: student
---
-
-CREATE TABLE species (
-    id text NOT NULL,
-    genus text,
-    species text,
-    taxa text
-);
-
-
-ALTER TABLE species OWNER TO student;
-
---
 -- Name: animals; Type: TABLE; Schema: public; Owner: student
 --
 
@@ -79,97 +54,85 @@ CREATE TABLE animals (
 ALTER TABLE animals OWNER TO student;
 
 --
--- Data for Name: plots; Type: TABLE DATA; Schema: public; Owner: student
+-- Name: animals_id_seq; Type: SEQUENCE; Schema: public; Owner: student
 --
 
-COPY plots (id, treatment) FROM stdin;
-1	Spectab exclosure
-2	Control
-3	Long-term Krat Exclosure
-4	Control
-5	Rodent Exclosure
-6	Short-term Krat Exclosure
-7	Rodent Exclosure
-8	Control
-9	Spectab exclosure
-10	Rodent Exclosure
-11	Control
-12	Control
-13	Short-term Krat Exclosure
-14	Control
-15	Long-term Krat Exclosure
-16	Rodent Exclosure
-17	Control
-18	Short-term Krat Exclosure
-19	Long-term Krat Exclosure
-20	Short-term Krat Exclosure
-21	Long-term Krat Exclosure
-22	Control
-23	Rodent Exclosure
-24	Rodent Exclosure
-\.
+CREATE SEQUENCE animals_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE animals_id_seq OWNER TO student;
+
+--
+-- Name: animals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE animals_id_seq OWNED BY animals.id;
 
 
 --
--- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: student
+-- Name: plots; Type: TABLE; Schema: public; Owner: student
 --
 
-COPY species (id, genus, species, taxa) FROM stdin;
-AB	Amphispiza	bilineata	Bird
-AH	Ammospermophilus	harrisi	Rodent
-AS	Ammodramus	savannarum	Bird
-BA	Baiomys	taylori	Rodent
-CB	Campylorhynchus	brunneicapillus	Bird
-CM	Calamospiza	melanocorys	Bird
-CQ	Callipepla	squamata	Bird
-CS	Crotalus	scutalatus	Reptile
-CT	Cnemidophorus	tigris	Reptile
-CU	Cnemidophorus	uniparens	Reptile
-CV	Crotalus	viridis	Reptile
-DM	Dipodomys	merriami	Rodent
-DO	Dipodomys	ordii	Rodent
-DS	Dipodomys	spectabilis	Rodent
-DX	Dipodomys	sp.	Rodent
-EO	Eumeces	obsoletus	Reptile
-GS	Gambelia	silus	Reptile
-NL	Neotoma	albigula	Rodent
-NX	Neotoma	sp.	Rodent
-OL	Onychomys	leucogaster	Rodent
-OT	Onychomys	torridus	Rodent
-OX	Onychomys	sp.	Rodent
-PB	Chaetodipus	baileyi	Rodent
-PC	Pipilo	chlorurus	Bird
-PE	Peromyscus	eremicus	Rodent
-PF	Perognathus	flavus	Rodent
-PG	Pooecetes	gramineus	Bird
-PH	Perognathus	hispidus	Rodent
-PI	Chaetodipus	intermedius	Rodent
-PL	Peromyscus	leucopus	Rodent
-PM	Peromyscus	maniculatus	Rodent
-PP	Chaetodipus	penicillatus	Rodent
-PU	Pipilo	fuscus	Bird
-PX	Chaetodipus	sp.	Rodent
-RF	Reithrodontomys	fulvescens	Rodent
-RM	Reithrodontomys	megalotis	Rodent
-RO	Reithrodontomys	montanus	Rodent
-RX	Reithrodontomys	sp.	Rodent
-SA	Sylvilagus	audubonii	Rabbit
-SB	Spizella	breweri	Bird
-SC	Sceloporus	clarki	Reptile
-SF	Sigmodon	fulviventer	Rodent
-SH	Sigmodon	hispidus	Rodent
-SO	Sigmodon	ochrognathus	Rodent
-SS	Spermophilus	spilosoma	Rodent
-ST	Spermophilus	tereticaudus	Rodent
-SU	Sceloporus	undulatus	Reptile
-SX	Sigmodon	sp.	Rodent
-UL	Lizard	sp.	Reptile
-UP	Pipilo	sp.	Bird
-UR	Rodent	sp.	Rodent
-US	Sparrow	sp.	Bird
-ZL	Zonotrichia	leucophrys	Bird
-ZM	Zenaida	macroura	Bird
-\.
+CREATE TABLE plots (
+    id integer NOT NULL,
+    treatment text
+);
+
+
+ALTER TABLE plots OWNER TO student;
+
+--
+-- Name: plots_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+--
+
+CREATE SEQUENCE plots_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE plots_id_seq OWNER TO student;
+
+--
+-- Name: plots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+--
+
+ALTER SEQUENCE plots_id_seq OWNED BY plots.id;
+
+
+--
+-- Name: species; Type: TABLE; Schema: public; Owner: student
+--
+
+CREATE TABLE species (
+    id text NOT NULL,
+    genus text,
+    species text,
+    taxa text
+);
+
+
+ALTER TABLE species OWNER TO student;
+
+--
+-- Name: animals id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY animals ALTER COLUMN id SET DEFAULT nextval('animals_id_seq'::regclass);
+
+
+--
+-- Name: plots id; Type: DEFAULT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY plots ALTER COLUMN id SET DEFAULT nextval('plots_id_seq'::regclass);
 
 
 --
@@ -35730,23 +35693,115 @@ COPY animals (id, month, day, year, plot_id, species_id, sex, hindfoot_length, w
 
 
 --
--- Name: plots_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Name: animals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
 --
 
-ALTER TABLE ONLY plots
-    ADD CONSTRAINT plots_pkey PRIMARY KEY (id);
-
-
---
--- Name: species_pkey; Type: CONSTRAINT; Schema: public; Owner: student
---
-
-ALTER TABLE ONLY species
-    ADD CONSTRAINT species_pkey PRIMARY KEY (id);
+SELECT pg_catalog.setval('animals_id_seq', 35549, false);
 
 
 --
--- Name: animals_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Data for Name: plots; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY plots (id, treatment) FROM stdin;
+1	Spectab exclosure
+2	Control
+3	Long-term Krat Exclosure
+4	Control
+5	Rodent Exclosure
+6	Short-term Krat Exclosure
+7	Rodent Exclosure
+8	Control
+9	Spectab exclosure
+10	Rodent Exclosure
+11	Control
+12	Control
+13	Short-term Krat Exclosure
+14	Control
+15	Long-term Krat Exclosure
+16	Rodent Exclosure
+17	Control
+18	Short-term Krat Exclosure
+19	Long-term Krat Exclosure
+20	Short-term Krat Exclosure
+21	Long-term Krat Exclosure
+22	Control
+23	Rodent Exclosure
+24	Rodent Exclosure
+\.
+
+
+--
+-- Name: plots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+--
+
+SELECT pg_catalog.setval('plots_id_seq', 24, false);
+
+
+--
+-- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: student
+--
+
+COPY species (id, genus, species, taxa) FROM stdin;
+AB	Amphispiza	bilineata	Bird
+AH	Ammospermophilus	harrisi	Rodent
+AS	Ammodramus	savannarum	Bird
+BA	Baiomys	taylori	Rodent
+CB	Campylorhynchus	brunneicapillus	Bird
+CM	Calamospiza	melanocorys	Bird
+CQ	Callipepla	squamata	Bird
+CS	Crotalus	scutalatus	Reptile
+CT	Cnemidophorus	tigris	Reptile
+CU	Cnemidophorus	uniparens	Reptile
+CV	Crotalus	viridis	Reptile
+DM	Dipodomys	merriami	Rodent
+DO	Dipodomys	ordii	Rodent
+DS	Dipodomys	spectabilis	Rodent
+DX	Dipodomys	sp.	Rodent
+EO	Eumeces	obsoletus	Reptile
+GS	Gambelia	silus	Reptile
+NL	Neotoma	albigula	Rodent
+NX	Neotoma	sp.	Rodent
+OL	Onychomys	leucogaster	Rodent
+OT	Onychomys	torridus	Rodent
+OX	Onychomys	sp.	Rodent
+PB	Chaetodipus	baileyi	Rodent
+PC	Pipilo	chlorurus	Bird
+PE	Peromyscus	eremicus	Rodent
+PF	Perognathus	flavus	Rodent
+PG	Pooecetes	gramineus	Bird
+PH	Perognathus	hispidus	Rodent
+PI	Chaetodipus	intermedius	Rodent
+PL	Peromyscus	leucopus	Rodent
+PM	Peromyscus	maniculatus	Rodent
+PP	Chaetodipus	penicillatus	Rodent
+PU	Pipilo	fuscus	Bird
+PX	Chaetodipus	sp.	Rodent
+RF	Reithrodontomys	fulvescens	Rodent
+RM	Reithrodontomys	megalotis	Rodent
+RO	Reithrodontomys	montanus	Rodent
+RX	Reithrodontomys	sp.	Rodent
+SA	Sylvilagus	audubonii	Rabbit
+SB	Spizella	breweri	Bird
+SC	Sceloporus	clarki	Reptile
+SF	Sigmodon	fulviventer	Rodent
+SH	Sigmodon	hispidus	Rodent
+SO	Sigmodon	ochrognathus	Rodent
+SS	Spermophilus	spilosoma	Rodent
+ST	Spermophilus	tereticaudus	Rodent
+SU	Sceloporus	undulatus	Reptile
+SX	Sigmodon	sp.	Rodent
+UL	Lizard	sp.	Reptile
+UP	Pipilo	sp.	Bird
+UR	Rodent	sp.	Rodent
+US	Sparrow	sp.	Bird
+ZL	Zonotrichia	leucophrys	Bird
+ZM	Zenaida	macroura	Bird
+\.
+
+
+--
+-- Name: animals animals_pkey; Type: CONSTRAINT; Schema: public; Owner: student
 --
 
 ALTER TABLE ONLY animals
@@ -35754,7 +35809,23 @@ ALTER TABLE ONLY animals
 
 
 --
--- Name: animals_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+-- Name: plots plots_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY plots
+    ADD CONSTRAINT plots_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: species species_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+--
+
+ALTER TABLE ONLY species
+    ADD CONSTRAINT species_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: animals animals_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
 --
 
 ALTER TABLE ONLY animals
@@ -35762,7 +35833,7 @@ ALTER TABLE ONLY animals
 
 
 --
--- Name: animals_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+-- Name: animals animals_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
 --
 
 ALTER TABLE ONLY animals
@@ -35770,16 +35841,8 @@ ALTER TABLE ONLY animals
 
 
 --
--- Name: public; Type: ACL; Schema: -; Owner: postgres
---
-
-REVOKE ALL ON SCHEMA public FROM PUBLIC;
-REVOKE ALL ON SCHEMA public FROM postgres;
-GRANT ALL ON SCHEMA public TO postgres;
-GRANT ALL ON SCHEMA public TO PUBLIC;
-
-
---
 -- PostgreSQL database dump complete
 --
 
+SELECT nextval('plots_id_seq');
+SELECT nextval('animals_id_seq');
