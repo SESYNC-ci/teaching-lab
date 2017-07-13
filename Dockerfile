@@ -92,6 +92,7 @@ RUN Rscript -e 'install.packages(c( \
       "rgdal", \
       "sf", \
       "raster", \
+      "stargazer", \
       "shiny"))'
 
 ## Python modules
