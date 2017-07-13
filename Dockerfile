@@ -116,6 +116,9 @@ RUN service postgresql start \
  && service postgresql stop \
  && sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
 
+## remove JupyterHub username -> lowercase "normalization"
+RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-packages/jupyterhub/auth.py
+
 ## add an empty "network file storage" for user data
 VOLUME /share
 
