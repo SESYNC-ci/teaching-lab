@@ -119,6 +119,16 @@ RUN service postgresql start \
 ## remove JupyterHub username -> lowercase "normalization"
 RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-packages/jupyterhub/auth.py
 
+## fix PostgreSQL on linux host
+## Mike pointed to
+## https://github.com/docker/docker/issues/783#issuecomment-56013588
+RUN mkdir /etc/ssl/private-copy \
+  && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
+  && rm -r /etc/ssl/private \
+  && mv /etc/ssl/private-copy /etc/ssl/private \
+  && chmod -R 0700 /etc/ssl/private \
+  && chown -R postgres /etc/ssl/private
+
 ## add an empty "network file storage" for user data
 VOLUME /share
 
