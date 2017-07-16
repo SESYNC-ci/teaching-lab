@@ -29,7 +29,8 @@ RUN apt-get update \
 ## open science libraries
 RUN apt-get install -yq --no-install-recommends \
       libgdal-dev \
-      libudunits2-dev
+      libudunits2-dev \
+      libnlopt-dev
 
 ## JupyterHub
 RUN apt-get install -yq --no-install-recommends \
@@ -93,7 +94,12 @@ RUN Rscript -e 'install.packages(c( \
       "sf", \
       "raster", \
       "stargazer", \
-      "shiny"))'
+      "shiny", \
+      "lme4"))'
+RUN Rscript -e 'install.packages("rstan", \
+      repos = "https://cloud.r-project.org/", \
+      configure.args = "CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations", \
+      dependencies = TRUE)'
 
 ## Python modules
 RUN pip3 install \
@@ -123,11 +129,11 @@ RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-pac
 ## Mike pointed to
 ## https://github.com/docker/docker/issues/783#issuecomment-56013588
 RUN mkdir /etc/ssl/private-copy \
-  && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
-  && rm -r /etc/ssl/private \
-  && mv /etc/ssl/private-copy /etc/ssl/private \
-  && chmod -R 0700 /etc/ssl/private \
-  && chown -R postgres /etc/ssl/private
+ && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
+ && rm -r /etc/ssl/private \
+ && mv /etc/ssl/private-copy /etc/ssl/private \
+ && chmod -R 0700 /etc/ssl/private \
+ && chown -R postgres /etc/ssl/private
 
 ## add an empty "network file storage" for user data
 VOLUME /share
@@ -137,11 +143,3 @@ ENV USER=""
 EXPOSE 80
 
 ENTRYPOINT ["/init"]
-
-## ideas
-# use gitlab pages as web server and git 'origin'?
-# ssh-keygen: could put a private ssh key in the docker file, for GitHub ... but maybe not needed without the handouts repo.
-# what does user namespaces on docker allow?
-# curl/clone the handouts repo?
-# if everyone "imports" the handouts on GitHub, then clones locally with data - they can all push to share solutions, and handouts are within /home/username/reponame
-# would be tidy to remove the /home/rstudio/kitematic ...
