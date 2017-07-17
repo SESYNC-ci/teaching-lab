@@ -95,7 +95,11 @@ RUN Rscript -e 'install.packages(c( \
       "raster", \
       "stargazer", \
       "shiny", \
-      "lme4"))'
+      "lme4", \
+      "tm", \
+      "SnowballC", \
+      "stringr", \
+      "network"))'
 RUN Rscript -e 'install.packages("rstan", \
       repos = "https://cloud.r-project.org/", \
       configure.args = "CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations", \
@@ -106,7 +110,9 @@ RUN pip3 install \
       numpy \
       pandas \
       pygresql \
-      sqlalchemy
+      sqlalchemy \
+      beautifulsoup4 \
+      census
 
 # Data & Configuration steps
 
