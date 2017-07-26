@@ -1,47 +1,62 @@
-FROM rocker/rstudio:latest
+FROM debian:stretch-slim
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
-# Mod rocker-org configuration
-RUN rm -rf /etc/cont-init.d \
- && echo "R_LIBS_USER='~/R/library'" >> /usr/local/lib/R/etc/Renviron
+#FIXME  && echo "R_LIBS_USER='~/R/library'" >> /usr/local/lib/R/etc/Renviron
 
 # Installation steps
 
-## base packages
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
-RUN apt-get update \
- && apt-get install -yq --no-install-recommends \
+
+## base packages
+RUN apt-get update -yq --no-install-recommends \
+ && apt-get install \
       build-essential \
-      apt-utils
-RUN apt-get install -yq --no-install-recommends \
+      apt-utils \
+ && apt-get install \
       curl \
       gnupg2 \
       nginx \
-      openssh-client
+      openssh-client \
+      gdebi-core \
+
+WORKDIR /tmp
+
+## s6-overlay process supervisor
+RUN curl -sLo https://github.com/just-containers/s6-overlay/releases/download/v1.11.0.1/s6-overlay-amd64.tar.gz \
+ && tar xzf s6-overlay-amd64.tar.gz -C / \
 
 ## add NodeSource repository and nodejs (JupyterHub requirement)
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
-RUN apt-get update \
- && apt-get install -yq --no-install-recommends \
+RUN curl -sLo https://deb.nodesource.com/setup_6.x \
+ && bash setup_6.x \
+ && apt-get update -yq --no-install-recommends \
+ && apt-get install \
       nodejs
 
-## open science libraries
-RUN apt-get install -yq --no-install-recommends \
+## open science libraries and utilities
+RUN apt-get install \
       libgdal-dev \
       libudunits2-dev \
-      libnlopt-dev
+      libnlopt-dev \
+      git
 
-## JupyterHub
-RUN apt-get install -yq --no-install-recommends \
-      python3-all \
+## R and RStudio
+RUN apt-get install \
+      r-base \
+      r-base-dev \
+RUN curl -sLo http://www.rstudio.org/download/latest/stable/server/ubuntu64/rstudio-server-latest-amd64.deb \
+ && gdebi rstudio-server-latest-amd64.deb
+
+## Python and JupyterHub
+RUN apt-get install \
+      python3 \
       python3-dev \
-      python3-pip
-RUN pip3 install --upgrade pip
-RUN pip3 install \
+      python3-pip \
+ && pip3 install --upgrade pip \
+ && pip3 install \
       setuptools \
-      wheel
-RUN pip3 install \
+      wheel \
+ && pip3 install \
       tornado \
       jinja2 \
       traitlets \
@@ -49,28 +64,22 @@ RUN pip3 install \
       jupyter \
       jupyterhub \
       jupyter-console \
-      ipywidgets
-      
-RUN npm install -g \
+      ipywidgets \
+ && npm install -g \
       configurable-http-proxy
 
 ## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
-RUN apt-get install -yq --no-install-recommends \
+RUN apt-get install \
       default-jdk
         
 ## PostgreSQL
-RUN apt-get install -yq --no-install-recommends \
+RUN apt-get install \
       postgresql \
-      postgresql-contrib && \
-      usermod -a -G shadow postgres
-
-## git LFS
-RUN curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | bash \
- && apt-get install -yq --no-install-recommends \
-      git-lfs
+      postgresql-contrib \
+ && usermod -a -G shadow postgres
       
 ## Packages and Modules
-
+#FIXME makevar for root packages
 ## R packages
 RUN Rscript -e 'install.packages(c( \
       "evaluate", \
@@ -99,8 +108,8 @@ RUN Rscript -e 'install.packages(c( \
       "tm", \
       "SnowballC", \
       "stringr", \
-      "network"))'
-RUN Rscript -e 'install.packages("rstan", \
+      "network"))' \
+ && Rscript -e 'install.packages("rstan", \
       repos = "https://cloud.r-project.org/", \
       configure.args = "CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations", \
       dependencies = TRUE)'
@@ -141,8 +150,8 @@ RUN mkdir /etc/ssl/private-copy \
  && chmod -R 0700 /etc/ssl/private \
  && chown -R postgres /etc/ssl/private
 
-## add an empty "network file storage" for user data
-VOLUME /share
+## expose user data to host
+VOLUME /home
 
 ENV USER=""
 
