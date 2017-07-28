@@ -7,6 +7,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <title></title>
     
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
@@ -18,12 +21,9 @@
             integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
             crossorigin="anonymous"></script>
 
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-
     <!-- Customization -->
-    <link href="/css/sesync.css" rel="stylesheet">
-    <link href="/css/custom.css" rel="stylesheet">
+    <link href="css/sesync.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet">
     
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -42,11 +42,11 @@
           <div class="row logo-row">
             <div class="col-md-5 sesync-logo-block">
               <div class="logo-img">
-                <a href="http://www.sesync.org"><img alt="SESYNC" src="/images/logo.png"></a>
+                <a href="http://www.sesync.org"><img alt="SESYNC" src="images/logo.png"></a>
               </div>
             </div>
             <div class="col-md-7">
-              <a href="http://www.sesync.org/for-you/cyberinfrastructure/training"><h1>cyber <small>training</small></h1></a>
+              <a href="https://www.sesync.org/for-you/cyberinfrastructure/training"><h1>cyber <small>training</small></h1></a>
             </div>
           </div>
         </div>
@@ -60,11 +60,11 @@
             <p>Welcome to your data science sandbox.</p>
             <h3>Access</h3>
             <p>Services hosted in this Docker container are available under the user name stored in the USER environment variable in Kitematic "Settings". The password is the same as the user name.</p>
-            <h3>Software</h3>             
+            <h3>Software</h3>
             <p>
-              <a href="/rstudio/" target="_blank"><img src="images/RStudio-Logo-Blue-Gradient.png" alt="RStudio" style="width:30%; padding:10px;"></a>
-              <a href="/jupyterhub/" target="_blank"><img src="images/hublogo.svg" alt="JupyterHub" style="width:30%; padding:10px;"></a>
-              <a href="/pgstudio/" target="_blank"><img src="images/pgstudio_logo.png" alt="PostgreSQL Studio" style="width:30%; padding:10px;"></a>
+              <a href="rstudio/" target="_blank"><img src="images/RStudio-Logo-Blue-Gradient.png" alt="RStudio" style="width:30%; padding:10px;"></a>
+              <a href="jupyterhub/" target="_blank"><img src="images/hublogo.svg" alt="JupyterHub" style="width:30%; padding:10px;"></a>
+              <a href="pgstudio/" target="_blank"><img src="images/pgstudio_logo.png" alt="PostgreSQL Studio" style="width:30%; padding:10px;"></a>
             </p>
             <h3>Resources</h3>
             <p>Sync files with a Docker container by mounting the volume "/share". Note that doing so will remove the current container and create a new one from the image. From the Kitematic "Settings" tab for the container, select "Volumes" and click "CHANGE" in the row for "/share". Create a new folder, or choose an existing folder, in your filesystem. The contents of this folder will be shared between your system (at its location in your filesystem) and the new container (at "/share").</p>
@@ -76,8 +76,8 @@
         <div class="container">
           <div class="row">
             <div class="col-md-7 footer-logo">
-              <a href="http://www.umd.edu"><img style="width: 219px" src="/images/umd_logo_footer.png" alt="University of Maryland"></a>
-              <a href="http://www.nsf.gov"> <img style="width: 301px" src="/images/nsf_logo_footer.png" alt="National Science Foundation"></a>
+              <a href="http://www.umd.edu"><img style="width: 219px" src="images/umd_logo_footer.png" alt="University of Maryland"></a>
+              <a href="http://www.nsf.gov"> <img style="width: 301px" src="images/nsf_logo_footer.png" alt="National Science Foundation"></a>
             </div>
             <div class="col-md-5 copyright">&copy; National Socio-Environmental Synthesis Center (SESYNC)<br>1 Park Place, Suite 300, Annapolis, MD 21401</div>
           </div>
