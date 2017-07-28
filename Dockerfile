@@ -1,54 +1,57 @@
 FROM debian:stretch-slim
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
-#FIXME  && echo "R_LIBS_USER='~/R/library'" >> /usr/local/lib/R/etc/Renviron
-
 # Installation steps
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANG C.UTF-8
 
 ## base packages
-RUN apt-get update -yq --no-install-recommends \
- && apt-get install \
+RUN apt-get update \
+ && apt-get install -yq --no-install-recommends \
       build-essential \
       apt-utils \
- && apt-get install \
+ && apt-get install -yq --no-install-recommends \
       curl \
       gnupg2 \
       nginx \
       openssh-client \
-      gdebi-core \
-
-WORKDIR /tmp
-
-## s6-overlay process supervisor
-RUN curl -sLo https://github.com/just-containers/s6-overlay/releases/download/v1.11.0.1/s6-overlay-amd64.tar.gz \
- && tar xzf s6-overlay-amd64.tar.gz -C / \
-
-## add NodeSource repository and nodejs (JupyterHub requirement)
-RUN curl -sLo https://deb.nodesource.com/setup_6.x \
- && bash setup_6.x \
- && apt-get update -yq --no-install-recommends \
- && apt-get install \
-      nodejs
-
+      ca-certificates
+      
 ## open science libraries and utilities
-RUN apt-get install \
+RUN apt-get install -yq --no-install-recommends \
       libgdal-dev \
       libudunits2-dev \
       libnlopt-dev \
       git
 
+## s6-overlay process supervisor
+RUN curl -sL https://github.com/just-containers/s6-overlay/releases/download/v1.11.0.1/s6-overlay-amd64.tar.gz | tar xz
+
+## add NodeSource repository and nodejs (JupyterHub requirement)
+RUN curl -sL https://deb.nodesource.com/setup_6.x | bash -
+RUN apt-get update \
+ && apt-get install -yq --no-install-recommends \
+      nodejs
+
 ## R and RStudio
-RUN apt-get install \
+RUN apt-get install -yq --no-install-recommends \
       r-base \
       r-base-dev \
-RUN curl -sLo http://www.rstudio.org/download/latest/stable/server/ubuntu64/rstudio-server-latest-amd64.deb \
- && gdebi rstudio-server-latest-amd64.deb
+      libapparmor1 \
+      libcurl4-openssl-dev \
+      libxml2-dev \
+      gdebi-core
+#FIXME outdated library is hardcoded in rstudio server: https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
+RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u6_amd64.deb -o /tmp/libssl1.0.0.deb \
+ && dpkg -i /tmp/libssl1.0.0.deb \
+ && rm /tmp/libssl1.0.0.deb
+RUN curl -sL http://www.rstudio.org/download/latest/stable/server/ubuntu64/rstudio-server-latest-amd64.deb -o /tmp/rstudio.deb \
+ && gdebi --non-interactive /tmp/rstudio.deb \
+ && rm /tmp/rstudio.deb
 
 ## Python and JupyterHub
-RUN apt-get install \
+RUN apt-get install -yq --no-install-recommends \
       python3 \
       python3-dev \
       python3-pip \
@@ -60,7 +63,6 @@ RUN apt-get install \
       tornado \
       jinja2 \
       traitlets \
-      requests \
       jupyter \
       jupyterhub \
       jupyter-console \
@@ -68,20 +70,26 @@ RUN apt-get install \
  && npm install -g \
       configurable-http-proxy
 
-## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
-RUN apt-get install \
-      default-jdk
-        
+#FIXME needing this (empty?) directory seems to be a bug with debian-slim
+#https://github.com/resin-io-library/base-images/commit/a56e1e5b4ca29a941cb23b0325784fd1a7732bca
+RUN mkdir -p /usr/share/man/man1 \
+ && mkdir -p /usr/share/man/man7
+
 ## PostgreSQL
-RUN apt-get install \
+RUN apt-get install -yq --no-install-recommends \
       postgresql \
       postgresql-contrib \
  && usermod -a -G shadow postgres
-      
+
+## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
+RUN apt-get install -yq --no-install-recommends \
+      default-jdk
+        
 ## Packages and Modules
 #FIXME makevar for root packages
 ## R packages
-RUN Rscript -e 'install.packages(c( \
+RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
+ && Rscript -e 'install.packages(c( \
       "evaluate", \
       "formatR", \
       "highr", \
@@ -121,19 +129,22 @@ RUN pip3 install \
       pygresql \
       sqlalchemy \
       beautifulsoup4 \
+      requests \
       census
 
 # Data & Configuration steps
+## for configuration of s6-overlay services (see root/etc/services.d)
 
-## include configuration for s6-overlay services (see root/etc/services.d)
 ADD root /
 
 ## Initialize postgresql and "student" role
 RUN service postgresql start \
- && su - postgres -c "createuser --no-login student" \
- && su - postgres -c "createdb portal -O student" \
- && su - postgres -c "psql -q portal < /var/backups/postgresql/portal_dump.sql" \
  && su - postgres -c "psql -qc 'REVOKE ALL ON schema public FROM public'" \
+ && su - postgres -c "createdb portal" \
+ && su - postgres -c "createuser --no-login student" \
+ #FIXME && su - postgres -c "psql portal -qc 'GRANT ALL PRIVILEGES ON DATABASE portal TO student'" \
+ && su - postgres -c "psql portal -qc 'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO student'" \
+ && su - postgres -c "psql portal -q < /var/backups/postgresql/portal_dump.sql" \
  && service postgresql stop \
  && sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
 
@@ -141,8 +152,7 @@ RUN service postgresql start \
 RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-packages/jupyterhub/auth.py
 
 ## fix PostgreSQL on linux host
-## Mike pointed to
-## https://github.com/docker/docker/issues/783#issuecomment-56013588
+## see https://github.com/docker/docker/issues/783#issuecomment-56013588
 RUN mkdir /etc/ssl/private-copy \
  && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
  && rm -r /etc/ssl/private \

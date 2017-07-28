@@ -35,7 +35,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: animals; Type: TABLE; Schema: public; Owner: student
+-- Name: animals; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE animals (
@@ -51,10 +51,8 @@ CREATE TABLE animals (
 );
 
 
-ALTER TABLE animals OWNER TO student;
-
 --
--- Name: animals_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+-- Name: animals_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE animals_id_seq
@@ -65,17 +63,15 @@ CREATE SEQUENCE animals_id_seq
     CACHE 1;
 
 
-ALTER TABLE animals_id_seq OWNER TO student;
-
 --
--- Name: animals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+-- Name: animals_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE animals_id_seq OWNED BY animals.id;
 
 
 --
--- Name: plots; Type: TABLE; Schema: public; Owner: student
+-- Name: plots; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE plots (
@@ -84,10 +80,8 @@ CREATE TABLE plots (
 );
 
 
-ALTER TABLE plots OWNER TO student;
-
 --
--- Name: plots_id_seq; Type: SEQUENCE; Schema: public; Owner: student
+-- Name: plots_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
 --
 
 CREATE SEQUENCE plots_id_seq
@@ -98,17 +92,15 @@ CREATE SEQUENCE plots_id_seq
     CACHE 1;
 
 
-ALTER TABLE plots_id_seq OWNER TO student;
-
 --
--- Name: plots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: student
+-- Name: plots_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
 --
 
 ALTER SEQUENCE plots_id_seq OWNED BY plots.id;
 
 
 --
--- Name: species; Type: TABLE; Schema: public; Owner: student
+-- Name: species; Type: TABLE; Schema: public; Owner: postgres
 --
 
 CREATE TABLE species (
@@ -119,24 +111,22 @@ CREATE TABLE species (
 );
 
 
-ALTER TABLE species OWNER TO student;
-
 --
--- Name: animals id; Type: DEFAULT; Schema: public; Owner: student
+-- Name: animals id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY animals ALTER COLUMN id SET DEFAULT nextval('animals_id_seq'::regclass);
 
 
 --
--- Name: plots id; Type: DEFAULT; Schema: public; Owner: student
+-- Name: plots id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY plots ALTER COLUMN id SET DEFAULT nextval('plots_id_seq'::regclass);
 
 
 --
--- Data for Name: animals; Type: TABLE DATA; Schema: public; Owner: student
+-- Data for Name: animals; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY animals (id, month, day, year, plot_id, species_id, sex, hindfoot_length, weight) FROM stdin;
@@ -35693,14 +35683,14 @@ COPY animals (id, month, day, year, plot_id, species_id, sex, hindfoot_length, w
 
 
 --
--- Name: animals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+-- Name: animals_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('animals_id_seq', 35549, false);
 
 
 --
--- Data for Name: plots; Type: TABLE DATA; Schema: public; Owner: student
+-- Data for Name: plots; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY plots (id, treatment) FROM stdin;
@@ -35732,14 +35722,14 @@ COPY plots (id, treatment) FROM stdin;
 
 
 --
--- Name: plots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: student
+-- Name: plots_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
 SELECT pg_catalog.setval('plots_id_seq', 24, false);
 
 
 --
--- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: student
+-- Data for Name: species; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
 COPY species (id, genus, species, taxa) FROM stdin;
@@ -35801,7 +35791,7 @@ ZM	Zenaida	macroura	Bird
 
 
 --
--- Name: animals animals_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Name: animals animals_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY animals
@@ -35809,7 +35799,7 @@ ALTER TABLE ONLY animals
 
 
 --
--- Name: plots plots_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Name: plots plots_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY plots
@@ -35817,7 +35807,7 @@ ALTER TABLE ONLY plots
 
 
 --
--- Name: species species_pkey; Type: CONSTRAINT; Schema: public; Owner: student
+-- Name: species species_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY species
@@ -35825,7 +35815,7 @@ ALTER TABLE ONLY species
 
 
 --
--- Name: animals animals_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+-- Name: animals animals_plot_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY animals
@@ -35833,7 +35823,7 @@ ALTER TABLE ONLY animals
 
 
 --
--- Name: animals animals_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: student
+-- Name: animals animals_species_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY animals
