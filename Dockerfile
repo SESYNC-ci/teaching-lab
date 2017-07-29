@@ -142,7 +142,6 @@ RUN service postgresql start \
  && su - postgres -c "psql -qc 'REVOKE ALL ON schema public FROM public'" \
  && su - postgres -c "createdb portal" \
  && su - postgres -c "createuser --no-login student" \
- #FIXME && su - postgres -c "psql portal -qc 'GRANT ALL PRIVILEGES ON DATABASE portal TO student'" \
  && su - postgres -c "psql portal -qc 'ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO student'" \
  && su - postgres -c "psql portal -q < /var/backups/postgresql/portal_dump.sql" \
  && service postgresql stop \
