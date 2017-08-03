@@ -1,4 +1,4 @@
-# Configuration file for jupyterhub.
+# Configuration file for jupyterhub.A
 
 #------------------------------------------------------------------------------
 # Application(SingletonConfigurable) configuration
@@ -57,7 +57,8 @@
 #c.JupyterHub.authenticator_class = 'jupyterhub.auth.PAMAuthenticator'
 
 ## The base URL of the entire application
-c.JupyterHub.base_url = u'/jupyterhub/'
+import os
+c.JupyterHub.base_url = os.environ['PREFIX'] + u'/jupyterhub/'
 
 ## Whether to shutdown the proxy when the Hub shuts down.
 #  
