@@ -58,7 +58,10 @@
 
 ## The base URL of the entire application
 import os
-c.JupyterHub.base_url = os.environ['PREFIX'] + u'/jupyterhub/'
+try:
+    c.JupyterHub.base_url = os.environ['PREFIX'] + u'/jupyterhub/'
+except KeyError:
+    c.JupyterHub.base_url = u'/jupyterhub/'
 
 ## Whether to shutdown the proxy when the Hub shuts down.
 #  
