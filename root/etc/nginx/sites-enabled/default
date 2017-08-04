@@ -19,7 +19,7 @@ server {
     proxy_read_timeout 20d;
   }
 
-  location /jupyterhub/ {
+  location /jupy/ {
     proxy_pass         http://localhost:8000;
 
     # WebSocket support
