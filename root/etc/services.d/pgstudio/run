@@ -1,2 +1,2 @@
 #!/usr/bin/with-contenv sh
-exec /usr/share/pgstudio/bin/catalina.sh run
+exec /usr/local/pgstudio/bin/catalina.sh run
