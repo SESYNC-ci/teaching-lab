@@ -106,6 +106,9 @@ RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.m
       "RPostgreSQL", \
       "dbplyr", \
       "tidyr", \
+      "tidytext", \
+      "wordcloud", \
+      "topicmodels", \
       "ggplot2", \
       "rgdal", \
       "sf", \
