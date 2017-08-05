@@ -130,6 +130,7 @@ RUN pip3 install \
       sqlalchemy \
       beautifulsoup4 \
       requests \
+      matplotlib \
       census
 
 # Data & Configuration steps
