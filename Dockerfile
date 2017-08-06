@@ -23,6 +23,7 @@ RUN apt-get install -yq --no-install-recommends \
       libgdal-dev \
       libudunits2-dev \
       libnlopt-dev \
+      libgsl-dev \
       git
 
 ## s6-overlay process supervisor
