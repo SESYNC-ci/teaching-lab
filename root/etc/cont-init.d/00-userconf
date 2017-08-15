@@ -1,7 +1,0 @@
-#!/usr/bin/with-contenv /bin/bash
-
-if [ -z "$USER" ]; then
-    echo -e "\e[93mUSER is null. Shutting down."
-    echo -e "\e[93mAssign a user name to the USER environment variable under Kitematic \"Settings\"."
-    s6-svscanctl -t /var/run/s6/services
-fi

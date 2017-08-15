@@ -172,3 +172,8 @@ ENV USER=""
 EXPOSE 80
 
 ENTRYPOINT ["/init"]
+
+## TODO
+# Check permissions on home directory
+# Add /share for multi-user
+

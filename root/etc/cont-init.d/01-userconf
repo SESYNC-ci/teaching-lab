@@ -1,0 +1,4 @@
+#!/usr/bin/with-contenv /bin/bash
+if [ -n "$USER" ]; then
+  /usr/local/sbin/labuseradd $USER
+fi
