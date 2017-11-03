@@ -4,7 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- The above 3 meta tags *must* come first in the head; any other
+         head content must come *after* these tags -->
     <title></title>
     
     <!-- jQuery -->
@@ -57,17 +58,29 @@
         <div class="col-md-9">
           <div class="main-content"><ul>
             <h1>Teaching Lab</h1>
-            <p>Welcome to your data science sandbox.</p>
-            <h3>Access</h3>
-            <p>Services hosted in this Docker container are available under the user name stored in the USER environment variable in Kitematic "Settings". The password is the same as the user name.</p>
+            <p>Welcome to your data science sandbox!</p>
+            <p>
+              The applications below are configured for multiple
+              users, <b>use the username and password provided by your
+              instructor</b> when prompted.<sup>*</sup>
+            </p>
             <h3>Software</h3>
             <p>
               <a href="rstudio/" target="_blank"><img src="images/RStudio-Logo-Blue-Gradient.png" alt="RStudio" style="width:30%; padding:10px;"></a>
               <a href="jupyter/" target="_blank"><img src="images/hublogo.svg" alt="JupyterHub" style="width:30%; padding:10px;"></a>
               <a href="pgstudio/" target="_blank"><img src="images/pgstudio_logo.png" alt="PostgreSQL Studio" style="width:30%; padding:10px;"></a>
             </p>
-            <h3>Resources</h3>
-            <p>Sync files with a Docker container by mounting the volume "/share". Note that doing so will remove the current container and create a new one from the image. From the Kitematic "Settings" tab for the container, select "Volumes" and click "CHANGE" in the row for "/share". Create a new folder, or choose an existing folder, in your filesystem. The contents of this folder will be shared between your system (at its location in your filesystem) and the new container (at "/share").</p>
+            <p><sup>*</sup> If you are hosting your own Docker
+              container, the username matches the USER environment
+              variable (under the "Settings" tab in Kitematic). The
+              password is the same as the username. In addition, any
+              path on the host may be mounted as volume "/share" on
+              the container. Note that doing so requires starting a
+              new container. From the Kitematic "Settings" tab for the
+              current container, select "Volumes" and click "CHANGE"
+              in the row for "/share". Choose, or create, a folder, in
+              your filesystem.
+            </p>
           </div>
         </div>
       </div>

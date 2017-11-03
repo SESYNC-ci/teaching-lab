@@ -165,7 +165,7 @@ RUN mkdir /etc/ssl/private-copy \
  && chown -R postgres /etc/ssl/private
 
 ## expose user data to host
-VOLUME /home
+VOLUME /share
 
 ENV USER=""
 
@@ -175,5 +175,3 @@ ENTRYPOINT ["/init"]
 
 ## TODO
 # Check permissions on home directory
-# Add /share for multi-user
-
