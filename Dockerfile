@@ -165,7 +165,7 @@ RUN mkdir /etc/ssl/private-copy \
  && chown -R postgres /etc/ssl/private
 
 ## expose user data to host
-VOLUME /share
+VOLUME /data
 
 ENV USER=""
 
