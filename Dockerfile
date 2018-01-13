@@ -37,19 +37,22 @@ RUN apt-get update \
 
 ## R and RStudio
 RUN apt-get install -yq --no-install-recommends \
+      libcurl4-openssl-dev \
+      libxml2-dev \
+      libssl-dev \
+ && apt-get install -yq --no-install-recommends \
       r-base \
       r-base-dev \
       libapparmor1 \
-      libcurl4-openssl-dev \
-      libxml2-dev \
       gdebi-core
-#FIXME outdated library is hardcoded in rstudio server: https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
-RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u6_amd64.deb -o /tmp/libssl1.0.0.deb \
+## FIXME outdated library is hardcoded in rstudio server
+# https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
+RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb -o /tmp/libssl1.0.0.deb \
  && dpkg -i /tmp/libssl1.0.0.deb \
  && rm /tmp/libssl1.0.0.deb
 RUN curl -sL http://www.rstudio.org/download/latest/stable/server/ubuntu64/rstudio-server-latest-amd64.deb -o /tmp/rstudio.deb \
- && gdebi --non-interactive /tmp/rstudio.deb \
- && rm /tmp/rstudio.deb
+  && gdebi --non-interactive /tmp/rstudio.deb \
+  && rm /tmp/rstudio.deb
 
 ## Python and JupyterHub
 RUN apt-get install -yq --no-install-recommends \
@@ -71,8 +74,22 @@ RUN apt-get install -yq --no-install-recommends \
  && npm install -g \
       configurable-http-proxy
 
-#FIXME needing this (empty?) directory seems to be a bug with debian-slim
-#https://github.com/resin-io-library/base-images/commit/a56e1e5b4ca29a941cb23b0325784fd1a7732bca
+## packages needed for building, fixing and serving lessons
+RUN apt-get install -yq --no-install-recommends \
+      ruby \
+      emacs \
+      rsync \
+ && pip3 install \
+      butterfly \
+      pweave \
+      pyyaml \
+      rise \
+ && git config --global push.default upstream \
+ && jupyter-nbextension install rise --py --sys-prefix \
+ && jupyter-nbextension enable rise --py --sys-prefix
+
+## FIXME needing this (empty?) directory seems to be a bug with debian-slim
+# https://github.com/resin-io-library/base-images/commit/a56e1e5b4ca29a941cb23b0325784fd1a7732bca
 RUN mkdir -p /usr/share/man/man1 \
  && mkdir -p /usr/share/man/man7
 
@@ -86,59 +103,59 @@ RUN apt-get install -yq --no-install-recommends \
 RUN apt-get install -yq --no-install-recommends \
       default-jdk
         
-## Packages and Modules
-#FIXME makevar for root packages
-## R packages
-RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
- && Rscript -e 'install.packages(c( \
-      "evaluate", \
-      "formatR", \
-      "highr", \
-      "markdown", \
-      "yaml", \
-      "caTools", \
-      "bitops", \
-      "knitr", \
-      "base64enc", \
-      "rprojroot", \
-      "rmarkdown", \
-      "codetools", \
-      "gridExtra", \
-      "RPostgreSQL", \
-      "dbplyr", \
-      "tidyr", \
-      "tidytext", \
-      "wordcloud", \
-      "topicmodels", \
-      "ggplot2", \
-      "rgdal", \
-      "sf", \
-      "raster", \
-      "stargazer", \
-      "shiny", \
-      "lme4", \
-      "tm", \
-      "SnowballC", \
-      "stringr", \
-      "network"))' \
- && Rscript -e 'install.packages("rstan", \
-      repos = "https://cloud.r-project.org/", \
-      configure.args = "CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations", \
-      dependencies = TRUE)'
+# ## Packages and Modules
+# #FIXME makevar for root packages
+# ## R packages
+# RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
+#  && Rscript -e "install.packages(c( \
+#       'evaluate', \
+#       'formatR', \
+#       'highr', \
+#       'markdown', \
+#       'yaml', \
+#       'caTools', \
+#       'bitops', \
+#       'knitr', \
+#       'base64enc', \
+#       'rprojroot', \
+#       'rmarkdown', \
+#       'codetools', \
+#       'gridExtra', \
+#       'RPostgreSQL', \
+#       'dbplyr', \
+#       'tidyr', \
+#       'tidytext', \
+#       'wordcloud', \
+#       'topicmodels', \
+#       'ggplot2', \
+#       'rgdal', \
+#       'sf', \
+#       'raster', \
+#       'stargazer', \
+#       'shiny', \
+#       'lme4', \
+#       'tm', \
+#       'SnowballC', \
+#       'stringr', \
+#       'network'))" \
+#  && Rscript -e "install.packages('rstan', \
+#       repos = 'https://cloud.r-project.org/', \
+#       configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
+#       dependencies = TRUE)"
 
-## Python modules
-RUN pip3 install \
-      numpy \
-      pandas \
-      pygresql \
-      sqlalchemy \
-      beautifulsoup4 \
-      requests \
-      matplotlib \
-      census
+# ## Python modules
+# RUN pip3 install \
+#       numpy \
+#       pandas \
+#       pygresql \
+#       sqlalchemy \
+#       beautifulsoup4 \
+#       requests \
+#       matplotlib \
+#       census
 
-# Data & Configuration steps
-## for configuration of s6-overlay services (see root/etc/services.d)
+## Data & Configuration
+# for configuration of s6-overlay services (see root/etc/services.d)
 
 ADD root /
 
@@ -155,8 +172,8 @@ RUN service postgresql start \
 ## remove JupyterHub username -> lowercase "normalization"
 RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-packages/jupyterhub/auth.py
 
-## fix PostgreSQL on linux host
-## see https://github.com/docker/docker/issues/783#issuecomment-56013588
+## FIXEME PostgreSQL on linux host
+# see https://github.com/docker/docker/issues/783#issuecomment-56013588
 RUN mkdir /etc/ssl/private-copy \
  && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
  && rm -r /etc/ssl/private \
