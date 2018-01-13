@@ -129,7 +129,9 @@ RUN apt-get install -yq --no-install-recommends \
 #       'topicmodels', \
 #       'ggplot2', \
 #       'rgdal', \
+#       'readr', \
 #       'sf', \
+#       'leaflet', \
 #       'raster', \
 #       'stargazer', \
 #       'shiny', \
