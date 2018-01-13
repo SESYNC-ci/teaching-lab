@@ -12,3 +12,7 @@
 .logo-row a:hover {
     text-decoration: none;
 }
+#footnote {
+    postition: absolute;
+    bottom: 0;
+}
