@@ -103,58 +103,58 @@ RUN apt-get install -yq --no-install-recommends \
 RUN apt-get install -yq --no-install-recommends \
       default-jdk
         
-# ## Packages and Modules
-# #FIXME makevar for root packages
-# ## R packages
-# RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
-#  && Rscript -e "install.packages(c( \
-#       'evaluate', \
-#       'formatR', \
-#       'highr', \
-#       'markdown', \
-#       'yaml', \
-#       'caTools', \
-#       'bitops', \
-#       'knitr', \
-#       'base64enc', \
-#       'rprojroot', \
-#       'rmarkdown', \
-#       'codetools', \
-#       'gridExtra', \
-#       'RPostgreSQL', \
-#       'dbplyr', \
-#       'tidyr', \
-#       'tidytext', \
-#       'wordcloud', \
-#       'topicmodels', \
-#       'ggplot2', \
-#       'rgdal', \
-#       'readr', \
-#       'sf', \
-#       'leaflet', \
-#       'raster', \
-#       'stargazer', \
-#       'shiny', \
-#       'lme4', \
-#       'tm', \
-#       'SnowballC', \
-#       'stringr', \
-#       'network'))" \
-#  && Rscript -e "install.packages('rstan', \
-#       repos = 'https://cloud.r-project.org/', \
-#       configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
-#       dependencies = TRUE)"
+## Packages and Modules
 
-# ## Python modules
-# RUN pip3 install \
-#       numpy \
-#       pandas \
-#       pygresql \
-#       sqlalchemy \
-#       beautifulsoup4 \
-#       requests \
-#       matplotlib \
-#       census
+## R packages
+RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
+ && Rscript -e "install.packages(c( \
+      'evaluate', \
+      'formatR', \
+      'highr', \
+      'markdown', \
+      'yaml', \
+      'caTools', \
+      'bitops', \
+      'knitr', \
+      'base64enc', \
+      'rprojroot', \
+      'rmarkdown', \
+      'codetools', \
+      'gridExtra', \
+      'RPostgreSQL', \
+      'dbplyr', \
+      'tidyr', \
+      'tidytext', \
+      'wordcloud', \
+      'topicmodels', \
+      'ggplot2', \
+      'rgdal', \
+      'readr', \
+      'sf', \
+      'leaflet', \
+      'raster', \
+      'stargazer', \
+      'shiny', \
+      'lme4', \
+      'tm', \
+      'SnowballC', \
+      'stringr', \
+      'network'))" \
+ && Rscript -e "install.packages('rstan', \
+      repos = 'https://cloud.r-project.org/', \
+      configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
+      dependencies = TRUE)"
+
+## Python modules
+RUN pip3 install \
+      numpy \
+      pandas \
+      pygresql \
+      sqlalchemy \
+      beautifulsoup4 \
+      requests \
+      matplotlib \
+      census
 
 ## Data & Configuration
 # for configuration of s6-overlay services (see root/etc/services.d)
@@ -194,3 +194,4 @@ ENTRYPOINT ["/init"]
 
 ## TODO
 # Check permissions on home directory
+# resolve makevar for root packages and this rstan thing
