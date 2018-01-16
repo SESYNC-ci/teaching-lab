@@ -139,6 +139,7 @@ RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.m
       'raster', \
       'stargazer', \
       'shiny', \
+      'servr', \
       'lme4', \
       'tm', \
       'SnowballC', \
