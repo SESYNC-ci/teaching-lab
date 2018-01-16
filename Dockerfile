@@ -16,7 +16,10 @@ RUN apt-get update \
       gnupg2 \
       nginx \
       openssh-client \
-      ca-certificates
+      ca-certificates \
+      ruby-dev \
+  && gem install \
+      bundler
       
 ## open science libraries and utilities
 RUN apt-get install -yq --no-install-recommends \
@@ -123,6 +126,7 @@ RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.m
       'gridExtra', \
       'RPostgreSQL', \
       'dbplyr', \
+      'data.table', \
       'tidyr', \
       'tidytext', \
       'wordcloud', \
