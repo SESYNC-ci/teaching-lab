@@ -22,6 +22,11 @@ server {
   location /jupyter/ {
     proxy_pass         http://localhost:8000;
 
+    # http://jupyterhub.readthedocs.io/en/latest/reference/config-examples.html
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header Host $http_host;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
     # WebSocket support
     proxy_http_version 1.1;
     proxy_set_header   Upgrade $http_upgrade;
@@ -38,35 +43,5 @@ server {
     proxy_set_header   Upgrade $http_upgrade;
     proxy_set_header   Connection $connection_upgrade;
     proxy_read_timeout 20d;
-  }
-  
-  location /butterfly {
-    # see github.com/paradoxxxzero/butterfly/wiki
-
-    rewrite ^/butterfly/?(.*) /$1 break;
-    proxy_pass         http://127.0.0.1:57575;
-
-    # WebSocket support
-    proxy_http_version 1.1;
-    proxy_set_header   Upgrade $http_upgrade;
-    proxy_set_header   Connection $connection_upgrade;
-    proxy_set_header   Host $host;
-    proxy_set_header   Origin "$scheme://$host";
-    
-    proxy_connect_timeout 7d;
-    proxy_send_timeout 7d;
-    proxy_read_timeout 7d;
-
-    sub_filter_once off;
-    
-    sub_filter_types text/css text/xml application/javascript;
-    sub_filter /style.css '/butterfly/style.css';
-    sub_filter /static '/butterfly/static';
-    sub_filter /ws '/butterfly/ws';
-    sub_filter /themes '/butterfly/themes';
-    sub_filter location.pathname '"/"';
-    sub_filter /local.js '/butterfly/local.js';
-  }
-
-  rewrite ^/theme/?(.*)/butterfly/?(.*) /butterfly/theme/$1/$2 permanent;
+  }  
 }

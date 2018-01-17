@@ -71,9 +71,11 @@ RUN apt-get install -yq --no-install-recommends \
       jinja2 \
       traitlets \
       jupyter \
+      jupyterlab \
       jupyterhub \
       jupyter-console \
       ipywidgets \
+ && jupyter serverextension enable --py jupyterlab --sys-prefix \
  && npm install -g \
       configurable-http-proxy
 

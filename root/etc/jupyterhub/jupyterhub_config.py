@@ -324,7 +324,7 @@ except KeyError:
 #  - You can set `notebook_dir` to `/` and `default_url` to `/home/{username}` to allow people to
 #    navigate the whole filesystem from their notebook, but still start in their home directory.
 #  - You can set this to `/lab` to have JupyterLab start by default, rather than Jupyter Notebook.
-#c.Spawner.default_url = ''
+c.Spawner.default_url = '/lab'
 
 ## Disable per-user configuration of single-user servers.
 #  
