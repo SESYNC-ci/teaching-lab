@@ -75,7 +75,9 @@ RUN apt-get install -yq --no-install-recommends \
       jupyterhub \
       jupyter-console \
       ipywidgets \
+      bash_kernel \
  && jupyter serverextension enable --py jupyterlab --sys-prefix \
+ && python3 -m bash_kernel.install \
  && npm install -g \
       configurable-http-proxy
 
@@ -158,9 +160,11 @@ RUN pip3 install \
       pandas \
       pygresql \
       sqlalchemy \
+      lxml \
       beautifulsoup4 \
       requests \
       matplotlib \
+      ggplot \
       census
 
 ## Data & Configuration
