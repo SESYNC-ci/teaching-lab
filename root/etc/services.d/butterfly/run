@@ -1,2 +1,0 @@
-#!/usr/bin/with-contenv sh
-exec /usr/local/bin/butterfly.server.py --unsecure --host=127.0.0.1 --login
