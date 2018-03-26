@@ -92,6 +92,8 @@ RUN apt-get install -yq --no-install-recommends \
       ipywidgets \
       bash_kernel \
  && jupyter serverextension enable --py jupyterlab --sys-prefix \
+ && jupyter labextension install @jupyterlab/hub-extension \
+ && jupyter labextension install @jupyterlab/geojson-extension \
  && python3 -m bash_kernel.install \
  && npm install -g \
       configurable-http-proxy
