@@ -1,12 +1,27 @@
-#!/bin/sh
-for USER; do
-  ID=$(id "$USER")
-  if [ -z "$ID" ]; then
-      useradd -m $USER -p $(openssl passwd -1 $USER)
-      PGPASS="/home/$USER/.pgpass"
-      echo "localhost:*:*:$USER:$USER" > $PGPASS
-      chmod 0600 $PGPASS
-      chown $USER:$USER $PGPASS
-      su - postgres -c "createuser --role=student $USER"
-  fi
-done
+#!/bin/bash
+
+USER="$1"
+if [ $(id "$USER") ]; then
+   exit 1
+fi
+
+if [ "$#" -gt 1 ]; then
+    PASS="$2"
+else
+    PASS="$USER"
+fi
+
+if [ "$#" -gt 2 ]; then
+    SETID="$3"
+fi
+
+if [ -d "/home/$USER" ]; then
+    useradd -p $(openssl passwd -1 $PASS) -u $SETID --no-create-home --home-dir "/home/$USER" $USER
+else
+    useradd -p $(openssl passwd -1 $PASS) $USER
+    PGPASS="/home/$USER/.pgpass"
+    echo "localhost:*:*:$USER:$PASS" > $PGPASS
+    chmod 0600 $PGPASS
+    chown $USER:$USER $PGPASS
+    su - postgres -c "createuser --role=student $USER"
+fi

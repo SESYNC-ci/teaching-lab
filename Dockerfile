@@ -23,6 +23,7 @@ RUN apt-get update \
       openssh-client \
       ca-certificates \
       ruby-dev \
+      cron \
       # pgStudio dependency:
       default-jdk \
  && gem install \
@@ -43,16 +44,25 @@ RUN curl -sL https://github.com/just-containers/s6-overlay/releases/download/v1.
 
 RUN apt-get install -yq --no-install-recommends \
       libgdal-dev \
+      python-gdal \
       libudunits2-dev \
       libnlopt-dev \
       libgsl-dev \
       git \
+      libcairo2-dev \
+      libmagick++-dev \
  && git config --global push.default upstream
  
 
 # R and RStudio
 
-RUN apt-get install -yq --no-install-recommends \
+ADD root/etc/apt/sources.list.d/debian-cran.list /etc/apt/sources.list.d/debian-cran.list
+ADD cran.gpg.key .
+RUN gpg --import cran.gpg.key \
+ && gpg --export --armor E19F5F87128899B192B1A2C2AD5F960A256A04AF | apt-key add - \
+ && rm cran.gpg.key \
+ && apt-get update \
+ && apt-get install -yq --no-install-recommends \
       libcurl4-openssl-dev \
       libxml2-dev \
       libssl-dev \
@@ -63,12 +73,12 @@ RUN apt-get install -yq --no-install-recommends \
       gdebi-core
 ### FIXME outdated library is hardcoded in rstudio server
 ### https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
-RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb -o /tmp/libssl1.0.0.deb \
- && dpkg -i /tmp/libssl1.0.0.deb \
- && rm /tmp/libssl1.0.0.deb
-RUN curl -sL https://download2.rstudio.org/rstudio-server-1.1.419-amd64.deb -o /tmp/rstudio.deb \
-  && gdebi --non-interactive /tmp/rstudio.deb \
-  && rm /tmp/rstudio.deb
+RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb -o libssl1.0.0.deb \
+ && dpkg -i libssl1.0.0.deb \
+ && rm libssl1.0.0.deb
+RUN curl -sL https://download2.rstudio.org/rstudio-server-1.1.442-amd64.deb -o rstudio.deb \
+  && gdebi --non-interactive rstudio.deb \
+  && rm rstudio.deb
 
 
 # Python and JupyterLab
@@ -107,13 +117,26 @@ RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-pac
 RUN apt-get install -yq --no-install-recommends \
       postgresql \
       postgresql-contrib \
+      postgis \
  && usermod -a -G shadow postgres
 
 ## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
 
 RUN apt-get install -yq --no-install-recommends \
       default-jdk
-        
+
+# QGIS
+
+ADD root/etc/apt/sources.list.d/debian-qgis.list /etc/apt/sources.list.d/debian-qgis.list
+ADD qgis.gpg.key .
+RUN gpg --import qgis.gpg.key \
+ && gpg --export --armor CAEB3DC3BDF7FB45 | apt-key add - \
+ && rm qgis.gpg.key \
+ && apt-get update \
+ && apt-get install -yq --no-install-recommends \
+      qgis \
+      python-qgis
+
 
 # Packages for Building and Serving Lessons
 
@@ -123,70 +146,103 @@ RUN apt-get install -yq --no-install-recommends \
       rsync \
  && pip3 install \
       pweave \
-      pyyaml \
-      rise \
- && jupyter-nbextension install rise --py --sys-prefix \
- && jupyter-nbextension enable rise --py --sys-prefix
+      pyyaml 
+ #      rise \
+ # && jupyter-nbextension install rise --py --sys-prefix \
+ # && jupyter-nbextension enable rise --py --sys-prefix
 
 
 # Packages for Lessons
+
+## Python Packages
+
+RUN pip3 install \
+      beautifulsoup4 \
+      census \
+      geopandas \
+      ggplot \
+      lxml \
+      matplotlib \
+      numpy \
+      pandas \
+      pygresql \
+      pydap \
+      rasterio \
+      requests \
+      sqlalchemy
 
 ## R Packages
 
 RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
  && Rscript -e "install.packages(c( \
-      'evaluate', \
-      'formatR', \
-      'highr', \
-      'markdown', \
-      'yaml', \
-      'caTools', \
-      'bitops', \
-      'knitr', \
       'base64enc', \
-      'rprojroot', \
-      'rmarkdown', \
+      'bitops', \
+      'BMS', \
+      'caTools', \
+      'caret', \
       'codetools', \
-      'gridExtra', \
-      'RPostgreSQL', \
-      'dbplyr', \
+      'colorRamps', \
+      'classInt', \
       'data.table', \
+      'dbplyr', \
+      'evaluate', \
+      'e1071', \
+      'forecast', \
+      'foreign', \
+      'formatR', \
+      'gdata', \
+      'ggplot2', \
+      'gridExtra', \
+      'gstat', \
+      'gtools', \
+      'highr', \
+      'knitr', \
+      'leaflet', \
+      'lubridate', \
+      'lme4', \
+      'magick', \
+      'mapview', \
+      'maptools', \
+      'markdown', \
+      'modules', \
+      'network', \
+      'nnet', \
+      'plyr', \
+      'plotrix', \
+      'psych', \
+      'randomForest', \
+      'raster', \
+      'rasterVis', \
+      'readr', \
+      'readxl', \
+      'rgdal', \
+      'rgeos', \
+      'ROCR', \
+      'rmarkdown', \
+      'RPostgreSQL', \
+      'rpart', \
+      'rprojroot', \
+      'servr', \
+      'sf', \
+      'shiny', \
+      'SnowballC', \
+      'sp', \
+      'spdep', \
+      'sphet', \
+      'stargazer', \
+      'stringr', \
       'tidyr', \
       'tidytext', \
-      'wordcloud', \
-      'topicmodels', \
-      'ggplot2', \
-      'rgdal', \
-      'readr', \
-      'sf', \
-      'leaflet', \
-      'raster', \
-      'stargazer', \
-      'shiny', \
-      'servr', \
-      'lme4', \
       'tm', \
-      'SnowballC', \
-      'stringr', \
-      'network'))" \
- && Rscript -e "install.packages('rstan', \
-      repos = 'https://cloud.r-project.org/', \
-      configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
-      dependencies = TRUE)"
-
-## Python Packages
-
-RUN pip3 install \
-      numpy \
-      pandas \
-      pygresql \
-      sqlalchemy \
-      lxml \
-      beautifulsoup4 \
-      requests \
-      matplotlib \
-      ggplot \
-      census
+      'topicmodels', \
+      'TOC', \
+      'wordcloud', \
+      'xts', \
+      'zoo'))"
+ # && Rscript -e "install.packages('rstan', \
+ #      repos = 'https://cloud.r-project.org/', \
+ #      configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
+ #      dependencies = TRUE)"
 
 
 # Data & Configuration
@@ -215,8 +271,8 @@ RUN mkdir /etc/ssl/private-copy \
  && chmod -R 0700 /etc/ssl/private \
  && chown -R postgres /etc/ssl/private
 
-## create /data volume
-VOLUME /data
+## create /home volume
+VOLUME /home
 
 ENV USER=""
 
