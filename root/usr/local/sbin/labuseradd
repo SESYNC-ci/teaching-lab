@@ -18,7 +18,7 @@ fi
 if [ -d "/home/$USER" ]; then
     useradd -p $(openssl passwd -1 $PASS) -u $SETID --no-create-home --home-dir "/home/$USER" $USER
 else
-    useradd -p $(openssl passwd -1 $PASS) $USER
+    useradd -m -p $(openssl passwd -1 $PASS) $USER
     PGPASS="/home/$USER/.pgpass"
     echo "localhost:*:*:$USER:$PASS" > $PGPASS
     chmod 0600 $PGPASS

@@ -51,6 +51,7 @@ RUN apt-get install -yq --no-install-recommends \
       git \
       libcairo2-dev \
       libmagick++-dev \
+      libspatialindex-c4v5 \
  && git config --global push.default upstream
  
 
