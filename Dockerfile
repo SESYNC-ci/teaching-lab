@@ -88,11 +88,11 @@ RUN apt-get install -yq --no-install-recommends \
       python3 \
       python3-dev \
       python3-pip \
- && pip3 install --upgrade pip \
- && pip3 install \
+ && python3 -m pip install --upgrade pip \
+ && python3 -m pip install \
       setuptools \
       wheel \
- && pip3 install \
+ && python3 -m pip install \
       tornado \
       jinja2 \
       traitlets \
@@ -145,7 +145,7 @@ RUN apt-get install -yq --no-install-recommends \
       ruby \
       emacs \
       rsync \
- && pip3 install \
+ && python3 -m pip install \
       pweave \
       pyyaml 
  #      rise \
@@ -157,7 +157,7 @@ RUN apt-get install -yq --no-install-recommends \
 
 ## Python Packages
 
-RUN pip3 install \
+RUN python3 -m pip install \
       beautifulsoup4 \
       census \
       geopandas \
