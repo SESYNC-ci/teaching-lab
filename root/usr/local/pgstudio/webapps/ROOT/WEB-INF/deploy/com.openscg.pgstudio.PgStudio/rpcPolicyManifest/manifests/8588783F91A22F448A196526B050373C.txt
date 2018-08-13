@@ -1,2 +1,0 @@
-serviceClass: com.openscg.pgstudio.client.PgStudioService
-path: 5AEC57B120343E03821D31AB96B4E6A6.gwt.rpc

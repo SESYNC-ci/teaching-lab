@@ -1,11 +1,12 @@
 FROM debian:stretch-slim
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
-## FIXME update-alternatives to blame
+## FIXME update-alternatives to blame for this one
 ## https://github.com/debuerreotype/debuerreotype/issues/10
 RUN mkdir -p \
       /usr/share/man/man1/ \
       /usr/share/man/man7/
+
 
 # System/Debian Packages
 
@@ -18,14 +19,14 @@ RUN apt-get update \
       apt-utils \
  && apt-get install -yq --no-install-recommends \
       curl \
+      wget \
       gnupg2 \
       nginx \
       openssh-client \
       ca-certificates \
       ruby-dev \
       cron \
-      # pgStudio dependency:
-      default-jdk \
+      procps \
  && gem install \
       bundler \
  && curl -sL https://deb.nodesource.com/setup_6.x | bash - \
@@ -52,8 +53,8 @@ RUN apt-get install -yq --no-install-recommends \
       libcairo2-dev \
       libmagick++-dev \
       libspatialindex-c4v5 \
+      pandoc \
  && git config --global push.default upstream
- 
 
 # R and RStudio
 
@@ -74,7 +75,7 @@ RUN gpg --import cran.gpg.key \
       gdebi-core
 ### FIXME outdated library is hardcoded in rstudio server
 ### https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
-RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb -o libssl1.0.0.deb \
+RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb -o libssl1.0.0.deb \
  && dpkg -i libssl1.0.0.deb \
  && rm libssl1.0.0.deb
 RUN curl -sL https://download2.rstudio.org/rstudio-server-1.1.442-amd64.deb -o rstudio.deb \
@@ -109,9 +110,6 @@ RUN apt-get install -yq --no-install-recommends \
  && npm install -g \
       configurable-http-proxy
 
-### FIXME prevent JupyterHub's username -> lowercase "normalization"
-RUN sed -e "/username = username.lower()/d" -i /usr/local/lib/python3.5/dist-packages/jupyterhub/auth.py
-
 
 # PostgreSQL
 
@@ -121,10 +119,6 @@ RUN apt-get install -yq --no-install-recommends \
       postgis \
  && usermod -a -G shadow postgres
 
-## pgStudio (java requiremnt; software is in /usr/share/pgstudio)
-
-RUN apt-get install -yq --no-install-recommends \
-      default-jdk
 
 # QGIS
 
@@ -138,6 +132,11 @@ RUN gpg --import qgis.gpg.key \
       qgis \
       python-qgis
 
+# TinyTex: https://yihui.name/tinytex/
+RUN wget -qO- "https://github.com/yihui/tinytex/raw/master/tools/install-unx.sh" | \
+      sh -s - --admin --no-path \
+ && mv ~/.TinyTeX /opt/TinyTeX \
+ && /opt/TinyTeX/bin/*/tlmgr path add
 
 # Packages for Building and Serving Lessons
 
@@ -146,11 +145,8 @@ RUN apt-get install -yq --no-install-recommends \
       emacs \
       rsync \
  && python3 -m pip install \
-      pweave \
+      pweave==0.25 \
       pyyaml 
- #      rise \
- # && jupyter-nbextension install rise --py --sys-prefix \
- # && jupyter-nbextension enable rise --py --sys-prefix
 
 
 # Packages for Lessons
@@ -170,12 +166,21 @@ RUN python3 -m pip install \
       pydap \
       rasterio \
       requests \
-      sqlalchemy
+      sqlalchemy \
+      scikit-learn \
+      scipy \
+      mlxtend \
+      seaborn
 
 ## R Packages
 
-RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.method = 'libcurl')" >> /usr/lib/R/etc/Rprofile.site \
- && Rscript -e "install.packages(c( \
+RUN echo "local({ \
+      r <- getOption('repos'); \
+      r['download.file.method'] <- 'libcurl'; \
+      options(repos = r); \
+      options(datatable.na.strings = '')})" >> /usr/lib/R/etc/Rprofile.site \
+ && Rscript -e "Sys.setenv(MAKEFLAGS = '-j8'); \
+      install.packages(type = 'source', pkgs = c( \
       'base64enc', \
       'bitops', \
       'BMS', \
@@ -223,6 +228,7 @@ RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.m
       'RPostgreSQL', \
       'rpart', \
       'rprojroot', \
+      'rstanarm', \
       'servr', \
       'sf', \
       'shiny', \
@@ -240,10 +246,6 @@ RUN echo "options(repos = c(CRAN = 'https://cran.rstudio.com/'), download.file.m
       'wordcloud', \
       'xts', \
       'zoo'))"
- # && Rscript -e "install.packages('rstan', \
- #      repos = 'https://cloud.r-project.org/', \
- #      configure.args = 'CXXFLAGS=-O3 -mtune=native -march=native -Wno-unused-variable -Wno-unused-function -flto -ffat-lto-objects  -Wno-unused-local-typedefs -Wno-ignored-attributes -Wno-deprecated-declarations', \
- #      dependencies = TRUE)"
 
 
 # Data & Configuration
@@ -263,17 +265,9 @@ RUN service postgresql start \
  && service postgresql stop \
  && sed -e "s|\(127.0.0.1/32\s*\)md5|\1pam pamservice=postgresql96|" -i /etc/postgresql/9.6/main/pg_hba.conf
 
-### FIXEME PostgreSQL on linux host
-### see https://github.com/docker/docker/issues/783#issuecomment-56013588
-RUN mkdir /etc/ssl/private-copy \
- && mv /etc/ssl/private/* /etc/ssl/private-copy/ \
- && rm -r /etc/ssl/private \
- && mv /etc/ssl/private-copy /etc/ssl/private \
- && chmod -R 0700 /etc/ssl/private \
- && chown -R postgres /etc/ssl/private
-
-## create /home volume
+## create volumes
 VOLUME /home
+VOLUME /nfs
 
 ENV USER=""
 
@@ -283,4 +277,3 @@ ENTRYPOINT ["/init"]
 
 ## TODO
 # Check permissions on home directory
-# resolve makevar for root packages and this rstan thing
