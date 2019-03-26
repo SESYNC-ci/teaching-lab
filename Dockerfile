@@ -155,22 +155,34 @@ RUN apt-get install -yq --no-install-recommends \
 
 RUN python3 -m pip install \
       beautifulsoup4 \
+      cartopy \
       census \
+      descartes \
+      esda \
+      gdal \
       geopandas \
+      georasters \
       ggplot \
+      libpysal \
       lxml \
       matplotlib \
+      mlxtend \
       numpy \
       pandas \
       pygresql \
+      pysal \
       pydap \
+      pyproj \
       rasterio \
       requests \
+      seaborn \
+      shapely \
       sqlalchemy \
       scikit-learn \
       scipy \
-      mlxtend \
-      seaborn
+      seaborn \
+      splot \
+      webcolors
 
 ## R Packages
 
@@ -237,6 +249,7 @@ RUN echo "local({ \
       'spdep', \
       'sphet', \
       'stargazer', \
+      'stars', \
       'stringr', \
       'tidyr', \
       'tidytext', \
