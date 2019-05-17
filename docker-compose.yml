@@ -1,0 +1,32 @@
+version: "3"
+services:
+  ldap:
+    image: osixia/openldap:latest
+    ports:
+      - 389:389
+      - 636:636
+    volumes:
+      - ldap:/var/lib/ldap # may also need /etc/ldap/slapd.d
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+    networks:
+      - labnet
+  rstudio:
+    image: rstudio
+    build: ./rstudio
+    ports:
+     - 8787:8787
+    volumes:
+      - nfs:/nfs
+    networks:
+      - labnet
+networks:
+  labnet:
+volumes:
+  ldap:
+  nfs:
+
+# # TODO / IDEAS
+# load data (like /nfs and postgresql) at build or run (with commands)
+# - would be nice to just copy /nfs/public-data/training into the docker volume nfs, as part of deploy

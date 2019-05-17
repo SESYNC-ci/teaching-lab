@@ -1,0 +1,15 @@
+.logo-row a:hover {
+    text-decoration: none;
+}
+#footnote {
+    position: absolute;
+    bottom: 0;
+}
+div.software {
+    display: inline-block;
+    width: 30%;
+}
+.software img {
+    width: 90%;
+    max-height: 150px;
+}
