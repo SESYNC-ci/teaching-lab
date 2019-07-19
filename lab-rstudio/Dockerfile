@@ -112,4 +112,5 @@ RUN curl -sL https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-
 
 VOLUME /home
 VOLUME /nfs
+
 CMD ["/usr/lib/rstudio-server/bin/rserver","--server-daemonize=0"]

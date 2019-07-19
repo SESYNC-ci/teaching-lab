@@ -30,13 +30,13 @@ RUN python3 -m pip install --upgrade pip \
       jupyterhub \
       jupyter-console \
       ipywidgets \
-      bash_kernel \
+      bash_kernel
+RUN npm install -g \
+      configurable-http-proxy \
  && jupyter serverextension enable --py jupyterlab --sys-prefix \
  && jupyter labextension install @jupyterlab/hub-extension \
- && jupyter labextension install @jupyterlab/geojson-extension \
- && python3 -m bash_kernel.install \
- && npm install -g \
-      configurable-http-proxy
+# && jupyter labextension install @jupyterlab/geojson-extension
+ && python3 -m bash_kernel.install
 
 
 # Packages for Lessons
@@ -76,4 +76,8 @@ RUN python3 -m pip install \
 
 VOLUME /home
 VOLUME /nfs
+
 CMD ["/usr/local/bin/jupyterhub", "-f", "/etc/jupyterhub/jupyterhub_config.py"]
+
+# # TODO
+# # jupyterlab_iframe
