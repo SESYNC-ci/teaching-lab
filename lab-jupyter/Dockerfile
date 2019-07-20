@@ -4,7 +4,6 @@ MAINTAINER "Ian Carroll" icarroll@sesync.org
 
 # System Configuration
 
-ADD root /
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
  && apt-get update \
  && apt-get install -yq --no-install-recommends \
@@ -54,7 +53,7 @@ RUN python3 -m pip install \
       lxml \
       matplotlib \
       mlxtend \
-      numpy \
+      numpy~=1.16 \
       pandas \
       pygresql \
       pysal \
@@ -71,6 +70,9 @@ RUN python3 -m pip install \
       splot \
       webcolors
 
+# Configuration Files
+
+ADD root/etc /etc
 
 # Docker Configuration
 
@@ -80,4 +82,5 @@ VOLUME /nfs
 CMD ["/usr/local/bin/jupyterhub", "-f", "/etc/jupyterhub/jupyterhub_config.py"]
 
 # # TODO
-# # jupyterlab_iframe
+#
+# - jupyterlab_iframe

@@ -5,7 +5,7 @@ MAINTAINER "Ian Carroll" icarroll@sesync.org
 #
 # /etc/apt/sources.list.d/* = additional sources for r-base and r-cran-* packages
 
-ADD root /
+ADD root/etc/apt /etc/apt
 
 # R and RStudio
 
@@ -34,79 +34,91 @@ RUN curl -sL https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-
 
 ## Packages for Lessons
 
-# RUN echo "local({ \
-#       r <- getOption('repos'); \
-#       r['download.file.method'] <- 'libcurl'; \
-#       options(repos = r); \
-#       options(datatable.na.strings = '')})" >> /usr/lib/R/etc/Rprofile.site \
-#  && Rscript -e "Sys.setenv(MAKEFLAGS = '-j8'); \
-#       install.packages(type = 'source', pkgs = c( \
-#       'base64enc', \
-#       'bitops', \
-#       'BMS', \
-#       'caTools', \
-#       'caret', \
-#       'codetools', \
-#       'colorRamps', \
-#       'classInt', \
-#       'data.table', \
-#       'dbplyr', \
-#       'evaluate', \
-#       'e1071', \
-#       'forecast', \
-#       'foreign', \
-#       'formatR', \
-#       'gdata', \
-#       'ggplot2', \
-#       'gridExtra', \
-#       'gstat', \
-#       'gtools', \
-#       'highr', \
-#       'knitr', \
-#       'leaflet', \
-#       'lubridate', \
-#       'lme4', \
-#       'magick', \
-#       'mapview', \
-#       'maptools', \
-#       'markdown', \
-#       'modules', \
-#       'network', \
-#       'nnet', \
-#       'plyr', \
-#       'plotrix', \
-#       'psych', \
-#       'randomForest', \
-#       'raster', \
-#       'rasterVis', \
-#       'readr', \
-#       'readxl', \
-#       'rgdal', \
-#       'rgeos', \
-#       'ROCR', \
-#       'rmarkdown', \
-#       'RPostgreSQL', \
-#       'rpart', \
-#       'rprojroot', \
-#       'rstanarm', \
-#       'servr', \
-#       'sf', \
-#       'shiny', \
-#       'SnowballC', \
-#       'sp', \
-#       'spdep', \
-#       'sphet', \
-#       'stargazer', \
-#       'stars', \
-#       'stringr', \
-#       'tidyr', \
-#       'tidytext', \
-#       'tm', \
-#       'topicmodels', \
-#       'TOC', \
-#       'wordcloud', \
-#       'xts', \
-#       'zoo'))"
+RUN apt-get update \
+ && apt-get install -yq --no-install-recommends \
+      libv8-dev
+RUN echo "local({ \
+      options(download.file.method = 'libcurl'); \
+      options(datatable.na.strings = '')})" >> /usr/lib/R/etc/Rprofile.site \
+ && Rscript -e "Sys.setenv(MAKEFLAGS = '-j8'); \
+      install.packages(type = 'source', pkgs = c( \
+      'base64enc', \
+      'bitops', \
+      'BMS', \
+      'caTools', \
+      'caret', \
+      'codetools', \
+      'colorRamps', \
+      'classInt', \
+      'datapack', \
+      'dataone', \
+      'data.table', \
+      'dbplyr', \
+      'EML', \
+      'emld', \
+      'evaluate', \
+      'e1071', \
+      'jsonlite', \
+      'forecast', \
+      'foreign', \
+      'formatR', \
+      'gdata', \
+      'ggplot2', \
+      'gridExtra', \
+      'gstat', \
+      'gtools', \
+      'here', \
+      'highr', \
+      'knitr', \
+      'leaflet', \
+      'lubridate', \
+      'lme4', \
+      'magick', \
+      'mapview', \
+      'maptools', \
+      'markdown', \
+      'modules', \
+      'network', \
+      'nnet', \
+      'plyr', \
+      'plotrix', \
+      'psych', \
+      'randomForest', \
+      'raster', \
+      'rasterVis', \
+      'readr', \
+      'readxl', \
+      'remotes', \
+      'rgdal', \
+      'rgeos', \
+      'ROCR', \
+      'rmarkdown', \
+      'RPostgreSQL', \
+      'rpart', \
+      'rprojroot', \
+      'rstanarm', \
+      'servr', \
+      'sf', \
+      'shiny', \
+      'SnowballC', \
+      'sp', \
+      'spdep', \
+      'sphet', \
+      'stargazer', \
+      'stars', \
+      'stringr', \
+      'tidyr', \
+      'tidytext', \
+      'tidyverse', \
+      'tm', \
+      'topicmodels', \
+      'TOC', \
+      'uuid', \
+      'wordcloud', \
+      'xts', \
+      'zoo'))"
+RUN Rscript -e "library(remotes); \
+      install_github('ropenscilabs/dataspice')"
 
 # Docker Configuration
 

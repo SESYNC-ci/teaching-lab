@@ -39,5 +39,6 @@ RUN apt-get install -yq --no-install-recommends \
       libspatialindex-c4v5 \
       pandoc \
       postgresql-client \
+      libjq-dev \
  && git config --global push.default upstream
 
