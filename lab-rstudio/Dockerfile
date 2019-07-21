@@ -89,6 +89,7 @@ RUN echo "local({ \
       'readr', \
       'readxl', \
       'remotes', \
+      'reticulate', \
       'rgdal', \
       'rgeos', \
       'ROCR', \
