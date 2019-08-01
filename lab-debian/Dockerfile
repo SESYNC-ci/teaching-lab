@@ -40,5 +40,7 @@ RUN apt-get install -yq --no-install-recommends \
       pandoc \
       postgresql-client \
       libjq-dev \
+      librdf0-dev \
+      python3 \
  && git config --system push.default upstream \
  && git config --system credential.helper "cache --timeout 100000"

@@ -7,7 +7,6 @@ MAINTAINER "Ian Carroll" icarroll@sesync.org
 RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
  && apt-get update \
  && apt-get install -yq --no-install-recommends \
-      python3 \
       python3-dev \
       python3-pip \
       python3-gdal \

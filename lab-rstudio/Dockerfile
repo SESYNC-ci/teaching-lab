@@ -64,6 +64,7 @@ RUN echo "local({ \
       'formatR', \
       'gdata', \
       'ggplot2', \
+      'ggwordcloud', \
       'gridExtra', \
       'gstat', \
       'gtools', \
