@@ -49,6 +49,7 @@ RUN python3 -m pip install \
     #  georasters \
       ggplot \
       libpysal \
+      llvmlite \
       lxml \
       matplotlib \
       mlxtend \
