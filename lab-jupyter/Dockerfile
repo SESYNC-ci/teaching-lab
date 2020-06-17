@@ -53,7 +53,7 @@ RUN python3 -m pip install \
       matplotlib \
       mlxtend \
       numpy~=1.18.5 \
-      pandas \
+      pandas~=1.0.5 \
     #  pygresql \
       pysal \
       pydap \
