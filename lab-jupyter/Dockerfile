@@ -45,17 +45,18 @@ RUN python3 -m pip install \
       census \
       descartes \
       esda \
-    #  geopandas \
+      geopandas \
     #  georasters \
       ggplot \
-    #  libpysal \
-    #  llvmlite~=0.33.0 \
-    #  lxml \
+      libpysal \
+      llvmlite~=0.33.0 \
+      lxml \
       matplotlib \
-    #  mlxtend \
+      mlxtend \
+      numba \
       numpy~=1.18.5 \
       pandas \
-    #  pygresql \
+      pygresql \
       pysal \
       pydap \
       pyproj \
