@@ -46,13 +46,13 @@ RUN python3 -m pip install \
       descartes \
       esda \
       geopandas \
-      georasters \
+    #  georasters \
       ggplot \
       libpysal \
       lxml \
       matplotlib \
       mlxtend \
-      numpy~=1.16 \
+      numpy~=1.18.5 \
       pandas \
       pygresql \
       pysal \
