@@ -54,7 +54,7 @@ RUN python3 -m pip install \
       mlxtend \
       numpy~=1.18.5 \
       pandas \
-      pygresql \
+    #  pygresql \
       pysal \
       pydap \
       pyproj \
