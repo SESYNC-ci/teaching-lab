@@ -4,7 +4,7 @@ MAINTAINER "Ian Carroll" icarroll@sesync.org
 
 # System Configuration
 
-RUN curl -sL https://deb.nodesource.com/setup_6.x | bash - \
+RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - \
  && apt-get update \
  && apt-get install -yq --no-install-recommends \
       python3-dev \
