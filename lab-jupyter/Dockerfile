@@ -66,7 +66,7 @@ RUN python3 -m pip install \
     #  scikit-learn \
     #  scipy \
     #  splot \
-    #  webcolors
+      webcolors
 
 # Configuration Files
 
