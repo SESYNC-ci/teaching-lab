@@ -40,35 +40,33 @@ RUN npm install -g \
 # Packages for Lessons
 
 RUN python3 -m pip install \
-      beautifulsoup4 \
-      cartopy \
+    #  beautifulsoup4 \
+    #  cartopy \
       census \
-      descartes \
-      esda \
-      geopandas \
+    #  descartes \
+    #  esda \
+    #  geopandas \
     #  georasters \
-      ggplot \
-      libpysal \
-      lxml \
-      matplotlib \
-      mlxtend \
-      numba \
+    #  ggplot \
+    #  libpysal \
+    #  lxml \
+    #  matplotlib \
+    #  mlxtend \
       numpy~=1.18.5 \
       pandas \
-      pygresql \
-      pysal \
-      pydap \
-      pyproj \
-      rasterio \
+    #  pygresql \
+    #  pysal \
+    #  pydap \
+    #  pyproj \
+    #  rasterio \
       requests \
       seaborn \
-      shapely \
+    #  shapely \
       sqlalchemy \
-      scikit-learn \
-      scipy \
-      seaborn \
-      splot \
-      webcolors
+    #  scikit-learn \
+    #  scipy \
+    #  splot \
+    #  webcolors
 
 # Configuration Files
 
