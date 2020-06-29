@@ -24,6 +24,7 @@ RUN apt-get update \
       ca-certificates \
       ruby-dev \
       cron \
+      multiarch-support \
       procps
       
 # Open Science Libraries/Utilities
