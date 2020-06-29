@@ -36,7 +36,7 @@ RUN apt-get install -yq --no-install-recommends \
       libgsl-dev \
       libcairo2-dev \
       libmagick++-dev \
-      libspatialindex-c4v5 \
+      libspatialindex-c5 \
       pandoc \
       postgresql-client \
       libjq-dev \
