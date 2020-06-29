@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
 ## FIXME update-alternatives to blame for this one
