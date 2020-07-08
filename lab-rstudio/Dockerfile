@@ -124,7 +124,6 @@ RUN echo "local({ \
       'TOC', \
       'uuid', \
       'wordcloud', \
-      'xml2', \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
