@@ -47,12 +47,14 @@ RUN echo "local({ \
       'BMS', \
       'caTools', \
       'caret', \
+      'censusapi', \
       'codetools', \
       'colorRamps', \
       'classInt', \
       'datapack', \
       'dataone', \
       'data.table', \
+      'DBI', \
       'dbplyr', \
       'EML', \
       'emld', \
@@ -70,6 +72,8 @@ RUN echo "local({ \
       'gtools', \
       'here', \
       'highr', \
+      'httr', \
+      'jsonlite', \
       'knitr', \
       'leaflet', \
       'lubridate', \
@@ -98,7 +102,9 @@ RUN echo "local({ \
       'RPostgreSQL', \
       'rpart', \
       'rprojroot', \
+      'RSQLite', \
       'rstanarm', \
+      'rvest', \
       'servr', \
       'sf', \
       'shiny', \
@@ -109,6 +115,7 @@ RUN echo "local({ \
       'stargazer', \
       'stars', \
       'stringr', \
+      'tidycensus', \
       'tidyr', \
       'tidytext', \
       'tidyverse', \
@@ -117,6 +124,7 @@ RUN echo "local({ \
       'TOC', \
       'uuid', \
       'wordcloud', \
+      'xml2', \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
