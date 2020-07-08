@@ -1,2 +1,3 @@
-deb http://cran.rstudio.com/bin/linux/debian stretch-cran35/
+#deb http://cran.rstudio.com/bin/linux/debian stretch-cran35/
 #deb-src http://cran.rstudio.com/bin/linux/debian stretch-cran35/
+deb http://cloud.r-project.org/bin/linux/debian buster-cran40/

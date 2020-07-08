@@ -25,10 +25,10 @@ RUN gpg --import cran.gpg.key \
       gdebi-core
 ### FIXME outdated library is hardcoded in rstudio server
 ### https://support.rstudio.com/hc/en-us/community/posts/115005872767-R-Studio-Server-install-fails-hard-coded-libssl1-0-0-dependency-out-of-date-
-RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb -o libssl1.0.0.deb \
- && dpkg -i libssl1.0.0.deb \
- && rm libssl1.0.0.deb
-RUN curl -sL https://download2.rstudio.org/server/debian9/x86_64/rstudio-server-1.2.1335-amd64.deb -o rstudio.deb \
+#RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb -o libssl1.0.0.deb \
+# && dpkg -i libssl1.0.0.deb \
+# && rm libssl1.0.0.deb
+RUN curl -sL https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.959-amd64.deb -o rstudio.deb \
   && gdebi --non-interactive rstudio.deb \
   && rm rstudio.deb
 

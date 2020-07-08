@@ -1,4 +1,4 @@
-FROM debian:stretch-slim
+FROM debian:buster-slim
 MAINTAINER "Ian Carroll" icarroll@sesync.org
 
 ## FIXME update-alternatives to blame for this one
@@ -24,6 +24,7 @@ RUN apt-get update \
       ca-certificates \
       ruby-dev \
       cron \
+      multiarch-support \
       procps
       
 # Open Science Libraries/Utilities
@@ -36,7 +37,7 @@ RUN apt-get install -yq --no-install-recommends \
       libgsl-dev \
       libcairo2-dev \
       libmagick++-dev \
-      libspatialindex-c4v5 \
+      libspatialindex-c5 \
       pandoc \
       postgresql-client \
       libjq-dev \
