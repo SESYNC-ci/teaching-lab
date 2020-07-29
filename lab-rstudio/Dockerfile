@@ -15,10 +15,10 @@ RUN gpg --import cran.gpg.key \
  && rm cran.gpg.key \
  && apt-get update \
  && apt-get install -yq --no-install-recommends \
-      libcurl4-openssl-dev \
+     # libcurl4-openssl-dev \
       libxml2-dev \
       libssl-dev \
- && apt-get install -yq --no-install-recommends \
+      librdf0-dev \
       r-base \
       r-base-dev \
       libapparmor1 \
@@ -41,7 +41,7 @@ RUN echo "local({ \
       options(download.file.method = 'libcurl'); \
       options(datatable.na.strings = '')})" >> /usr/lib/R/etc/Rprofile.site \
  && Rscript -e "Sys.setenv(MAKEFLAGS = '-j8'); \
-      install.packages(type = 'source', pkgs = c( \
+      install.packages(type = 'source', lib = '/usr/lib/R/site-library', pkgs = c( \
       'base64enc', \
       'bitops', \
       'BMS', \
