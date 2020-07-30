@@ -14,7 +14,7 @@ This repository works in conjunction with the SESYNC-ci/handouts to provision a 
 
 - The [teaching-lab](https://github.com/sesync-ci/teaching-lab) and [handouts](https://github.com/SESYNC-ci/handouts.git) repositories must be cloned into your research-home space. 
 
-- Create two text files with user and group information.  `users.txt` contains a username for each workshop participant, with each name on a separate line.  `groups.txt` contains a team name followed by team participants (space delimited), with each team on a separate line.  Save these files in `~/path/to/handouts/root/tmp/lab/` on your research-home space.  Note, these text files are in the `.gitignore` for the handouts repo. 
+- Create two text files with user and group information.  `users.txt` contains a username (**must be _all_ lowercase**) for each workshop participant, with each name on a separate line.  `groups.txt` contains a team name followed by team participants (space delimited), with each team on a separate line.  Save these files in `~/path/to/handouts/root/tmp/lab/` on your research-home space.  Note, these text files are in the `.gitignore` for the handouts repo. 
 
 - Log in to docker01.research.sesync.org, and `cd` into the teaching-lab repository in your research-home space.  Your user will need to be in the `docker` UNIX group on this host.
 
