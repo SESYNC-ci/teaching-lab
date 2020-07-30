@@ -37,6 +37,9 @@ RUN curl -sL https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.
 RUN apt-get update \
  && apt-get install -yq --no-install-recommends \
       libv8-dev
+
+# We install packages explicitly into /usr/lib/R/site-library because
+# that is where RStudio looks for packages in its libPaths
 RUN echo "local({ \
       options(download.file.method = 'libcurl'); \
       options(datatable.na.strings = '')})" >> /usr/lib/R/etc/Rprofile.site \
@@ -128,7 +131,7 @@ RUN echo "local({ \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
-      install_github('ropenscilabs/dataspice')"
+      install_github('ropenscilabs/dataspice', lib = '/usr/lib/R/site-library')"
 
 # Docker Configuration
 
