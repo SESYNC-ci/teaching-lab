@@ -62,6 +62,34 @@ Why is this so complicated. Well, there are some gotcha's having to do with the 
 - The docker server does not have access to /nfs.
 - The docker container cannot mount to folders in  /nfs or /research-home, so the `make lab` target must be run from a clone of the repository in a local folder, e.g. /srv.
 
+## Lab User Archives
+Users may wish to have a copy of their lab files after the removal of the lab.
+
+Run as yourself, substituting where needed:
+```
+icarroll@docker01:~$ sudo rsync -a /var/lib/docker/volumes/lab_home/_data/$USER/ /tmp/$USER-lab/  # note that the slash at the end of the path is significant
+icarroll@docker01:~$ sudo chown -R icarroll /tmp/$USER-lab/
+icarroll@docker01:~$ cd /tmp
+icarroll@docker01:tmp$ zip -r -q ~/$USER-lab $USER-lab/
+icarroll@docker01:tmp$ rm -rf /tmp/$USER-lab/  # cleanup temp files
+```
+
+At this point you will have a zip file in your research-home, but you should move the file to `/nfs/` so you can share with the user.    
+
+Log into a host (eg. sshgw02.research.sesync.org) that can access `/nfs` and execute the following: 
+```
+icarroll@sshgw02:~$ mv $USER-lab.zip /nfs/icarroll-data
+```
+
+Go to [files.sesync.org](files.sesync.org) where you can obtain a sharing link to send to the user.    
+
+After lab users have had time to request their files (usually a couple weeks after a training event), the data volumes can be removed to clean up the docker01 server.  
+```
+icarroll@docker01:~$ docker volume ls    # list the volumes
+icarroll@docker01:~$ docker volume prune # remove the volumes
+```
+
+You now have a clean slate for the next training event.
 
 [source repository]: https://github.com/SESYNC-ci/teaching-lab/
 [handouts repository]: https://github.com/SESYNC-ci/handouts/
