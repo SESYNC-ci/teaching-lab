@@ -40,19 +40,19 @@ If a handouts folder already exists, and therefore the clone fails, delete the h
   - Unzip the data to that clone, so the docker daemon will be able to mount it.
     ```
     icarroll@docker01:srv$ cd handouts
-    icarroll@docker01:handouts$ cp ~/path/to/handouts/data.zip /tmp
-    icarroll@docker01:handouts$ sudo unzip /tmp/data.zip -d root/tmp/lab
+    icarroll@docker01:/srv/handouts$ cp ~/path/to/handouts/data.zip /tmp
+    icarroll@docker01:/srv/handouts$ sudo unzip /tmp/data.zip -d root/tmp/lab
     ```
 
   - Copy the user and group information to the same location
     ```
-    icarroll@docker01:handouts$ cp ~/path/to/handouts/root/tmp/lab/*.txt /tmp
-    icarroll@docker01:handouts$ sudo cp /tmp/*.txt root/tmp/lab/
+    icarroll@docker01:/srv/handouts$ cp ~/path/to/handouts/root/tmp/lab/*.txt /tmp
+    icarroll@docker01:/srv/handouts$ sudo cp /tmp/*.txt root/tmp/lab/
     ```
 
   - Now start the lab
     ```
-    icarroll@docker01:handouts$ make lab
+    icarroll@docker01:/srv/handouts$ make lab
     ```
 
 - The lab is made with `docker stack deploy -c docker-compose.yml lab` command in the Makefile.  To stop the containers in the lab, use `docker stack rm docker-compose.yml lab`.  Only then you can remove and rebuild the containers if needed. 
