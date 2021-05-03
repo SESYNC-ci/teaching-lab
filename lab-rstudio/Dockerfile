@@ -127,8 +127,8 @@ RUN echo "local({ \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
-      install_github('ropenscilabs/dataspice'); \
-      install_github('r-spatial/mapview@09b14f9')"
+      install_github('ropenscilabs/dataspice', lib = '/usr/lib/R/site-library'); \
+      install_github('r-spatial/mapview@09b14f9', lib = '/usr/lib/R/site-library')"
 
 # Docker Configuration
 
