@@ -57,6 +57,22 @@ If a handouts folder already exists, and therefore the clone fails, delete the h
 
 - The lab is made with `docker stack deploy -c docker-compose.yml lab` command in the Makefile.  To stop the containers in the lab, use `docker stack rm docker-compose.yml lab`.  Only then you can remove and rebuild the containers if needed. 
 
+- If you need to install R packages into the container while it is running (without taking it down and rebuilding it)
+  
+  - get the container ID
+  ```
+  icarroll@docker01:~$ docker container ls
+  ```
+  
+  - go into the container you want to modify
+  ```
+  icarroll@docker01:~$ docker exec -ti -u root <CONTAINER ID> bash
+  ```
+  
+  - exectue R script to install packages
+  ```
+  icarroll@docker01:~$ Rscript -e "install.packages(c('<PACKAGE1>', '<PACKAGE2>'), lib = '/usr/lib/R/site-library')"
+  ```
 
 Why is this so complicated. Well, there are some gotcha's having to do with the SESYNC cyberinfrastrucutre:
 - The docker server does not have access to /nfs.
