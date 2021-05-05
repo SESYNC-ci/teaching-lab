@@ -69,7 +69,7 @@ If a handouts folder already exists, and therefore the clone fails, delete the h
   icarroll@docker01:~$ docker exec -ti -u root <CONTAINER ID> bash
   ```
   
-  - exectue R script to install packages
+  - execute R script to install packages
   ```
   icarroll@docker01:~$ Rscript -e "install.packages(c('<PACKAGE1>', '<PACKAGE2>'), lib = '/usr/lib/R/site-library')"
   ```

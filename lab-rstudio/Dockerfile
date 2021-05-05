@@ -51,6 +51,7 @@ RUN echo "local({ \
       'codetools', \
       'colorRamps', \
       'classInt', \
+      'cubelyr', \
       'datapack', \
       'dataone', \
       'data.table', \
@@ -110,6 +111,7 @@ RUN echo "local({ \
       'shiny', \
       'SnowballC', \
       'sp', \
+      'spatialreg', \
       'spdep', \
       'sphet', \
       'stargazer', \
