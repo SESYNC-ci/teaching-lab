@@ -115,7 +115,7 @@ RUN echo "local({ \
       'spdep', \
       'sphet', \
       'stargazer', \
-      'stars', \
+      #'stars', \
       'stringr', \
       'tidycensus', \
       'tidyr', \
@@ -130,7 +130,8 @@ RUN echo "local({ \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
       install_github('ropenscilabs/dataspice', lib = '/usr/lib/R/site-library'); \
-      install_github('r-spatial/mapview@09b14f9', lib = '/usr/lib/R/site-library')"
+      install_github('r-spatial/mapview@09b14f9', lib = '/usr/lib/R/site-library'); \
+      install_github('r-spatial/stars', lib = '/usr/lib/R/site-library')"
 
 # Docker Configuration
 
