@@ -129,7 +129,7 @@ RUN echo "local({ \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
-      install_github('ropenscilabs/EMLassemblyline', lib = '/usr/lib/R/site-library')"
+      install_github('EDIorg/EMLassemblyline', lib = '/usr/lib/R/site-library')"
 
 # Docker Configuration
 
