@@ -1,5 +1,5 @@
 FROM sesync/lab-debian
-MAINTAINER "Ian Carroll" icarroll@sesync.org
+MAINTAINER "Rachael Blake" rblake@sesync.org
 
 # # System Configuration
 #
@@ -28,7 +28,7 @@ RUN gpg --import cran.gpg.key \
 #RUN curl -sL http://ftp.debian.org/debian/pool/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u8_amd64.deb -o libssl1.0.0.deb \
 # && dpkg -i libssl1.0.0.deb \
 # && rm libssl1.0.0.deb
-RUN curl -sL https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.959-amd64.deb -o rstudio.deb \
+RUN curl -sL https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.4.1717-amd64.deb -o rstudio.deb \
   && gdebi --non-interactive rstudio.deb \
   && rm rstudio.deb
 
