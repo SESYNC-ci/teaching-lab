@@ -130,7 +130,8 @@ RUN echo "local({ \
       'xts', \
       'zoo'))"
 RUN Rscript -e "library(remotes); \
-      install_github('EDIorg/EMLassemblyline', lib = '/usr/lib/R/site-library')"
+      install_github('EDIorg/EMLassemblyline', lib = '/usr/lib/R/site-library'); \
+	  install_github('r-spatial/leafem', lib = '/usr/lib/R/site-library')"
 
 # Docker Configuration
 
