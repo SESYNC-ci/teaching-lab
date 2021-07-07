@@ -57,6 +57,7 @@ RUN echo "local({ \
       'data.table', \
       'DBI', \
       'dbplyr', \
+      'DiagrammeR', \
       'EML', \
       'emld', \
       'evaluate', \
